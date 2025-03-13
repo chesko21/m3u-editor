@@ -202,7 +202,7 @@ export default function Home() {
 
       {/* Channel List Table */}
       {loading || parsing ? (
-        <SkeletonLoader /> // Tampilkan Skeleton Loader saat loading atau parsing
+        <SkeletonLoader /> // Display Skeleton Loader while loading or parsing
       ) : channels.length > 0 ? (
         <div className="flex-1 overflow-auto bg-white">
           <table className="min-w-full border-collapse border border-gray-300">
@@ -245,8 +245,9 @@ export default function Home() {
                       onChange={(e) => handleChange(index, "logo", e.target.value)}
                       className="border p-1 w-full rounded-md transition focus:border-blue-500 focus:ring focus:ring-blue-200"
                       data-tip="Edit Logo URL"
-                      data-for="tooltip"
+                      data-for={`tooltip-${index}`}
                     />
+                    <Tooltip id={`tooltip-${index}`} place="top" effect="solid" />
                   </td>
                   <td className="border p-2" style={{ width: columnWidths.name }}>
                     <input
@@ -255,8 +256,9 @@ export default function Home() {
                       onChange={(e) => handleChange(index, "name", e.target.value)}
                       className="border p-1 w-full rounded-md transition focus:border-blue-500 focus:ring focus:ring-blue-200"
                       data-tip="Edit Channel Name"
-                      data-for="tooltip"
+                      data-for={`tooltip-${index}`}
                     />
+                    <Tooltip id={`tooltip-${index}`} place="top" effect="solid" />
                   </td>
                   <td className="border p-2" style={{ width: columnWidths.group }}>
                     <input
@@ -265,8 +267,9 @@ export default function Home() {
                       onChange={(e) => handleChange(index, "group", e.target.value)}
                       className="border p-1 w-full rounded-md transition focus:border-blue-500 focus:ring focus:ring-blue-200"
                       data-tip="Edit Group"
-                      data-for="tooltip"
+                      data-for={`tooltip-${index}`}
                     />
+                    <Tooltip id={`tooltip-${index}`} place="top" effect="solid" />
                   </td>
                   <td className="border p-2" style={{ width: columnWidths.url }}>
                     <input
@@ -275,8 +278,9 @@ export default function Home() {
                       onChange={(e) => handleChange(index, "url", e.target.value)}
                       className="border p-1 w-full rounded-md transition focus:border-blue-500 focus:ring focus:ring-blue-200"
                       data-tip="Edit URL"
-                      data-for="tooltip"
+                      data-for={`tooltip-${index}`}
                     />
+                    <Tooltip id={`tooltip-${index}`} place="top" effect="solid" />
                   </td>
                   <td className="border p-2" style={{ width: columnWidths.referer }}>
                     <input
@@ -285,8 +289,9 @@ export default function Home() {
                       onChange={(e) => handleChange(index, "referer", e.target.value)}
                       className="border p-1 w-full rounded-md transition focus:border-blue-500 focus:ring focus:ring-blue-200"
                       data-tip="Edit Referer"
-                      data-for="tooltip"
+                      data-for={`tooltip-${index}`}
                     />
+                    <Tooltip id={`tooltip-${index}`} place="top" effect="solid" />
                   </td>
                   <td className="border p-2" style={{ width: columnWidths.licenseType }}>
                     <input
@@ -296,8 +301,9 @@ export default function Home() {
                       onChange={(e) => handleChange(index, "licenseType", e.target.value)}
                       className="border p-1 w-full rounded-md transition focus:border-blue-500 focus:ring focus:ring-blue-200"
                       data-tip="Edit License Type"
-                      data-for="tooltip"
+                      data-for={`tooltip-${index}`}
                     />
+                    <Tooltip id={`tooltip-${index}`} place="top" effect="solid" />
                   </td>
                   <td className="border p-2" style={{ width: columnWidths.licenseKey }}>
                     <input
@@ -307,8 +313,9 @@ export default function Home() {
                       onChange={(e) => handleChange(index, "licenseKey", e.target.value)}
                       className="border p-1 w-full rounded-md transition focus:border-blue-500 focus:ring focus:ring-blue-200"
                       data-tip="Edit License Key"
-                      data-for="tooltip"
+                      data-for={`tooltip-${index}`}
                     />
+                    <Tooltip id={`tooltip-${index}`} place="top" effect="solid" />
                   </td>
                 </tr>
               ))}
@@ -316,9 +323,6 @@ export default function Home() {
           </table>
         </div>
       ) : null}
-
-      {/* Tooltip Component */}
-      <Tooltip />
     </div>
   );
 }
