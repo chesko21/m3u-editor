@@ -202,7 +202,7 @@ export default function Home() {
 
       {/* Channel List Table */}
       {loading || parsing ? (
-        <SkeletonLoader /> // Display Skeleton Loader while loading or parsing
+        <SkeletonLoader /> // Show Skeleton Loader during loading or parsing
       ) : channels.length > 0 ? (
         <div className="flex-1 overflow-auto bg-white">
           <table className="min-w-full border-collapse border border-gray-300">
@@ -247,7 +247,7 @@ export default function Home() {
                       data-tip="Edit Logo URL"
                       data-for={`tooltip-${index}`}
                     />
-                    <Tooltip id={`tooltip-${index}`} place="top" effect="solid" />
+                    <Tooltip id={`tooltip-${index}`} place="top" />
                   </td>
                   <td className="border p-2" style={{ width: columnWidths.name }}>
                     <input
@@ -258,7 +258,7 @@ export default function Home() {
                       data-tip="Edit Channel Name"
                       data-for={`tooltip-${index}`}
                     />
-                    <Tooltip id={`tooltip-${index}`} place="top" effect="solid" />
+                    <Tooltip id={`tooltip-${index}`} place="top" />
                   </td>
                   <td className="border p-2" style={{ width: columnWidths.group }}>
                     <input
@@ -269,7 +269,7 @@ export default function Home() {
                       data-tip="Edit Group"
                       data-for={`tooltip-${index}`}
                     />
-                    <Tooltip id={`tooltip-${index}`} place="top" effect="solid" />
+                    <Tooltip id={`tooltip-${index}`} place="top" />
                   </td>
                   <td className="border p-2" style={{ width: columnWidths.url }}>
                     <input
@@ -280,7 +280,7 @@ export default function Home() {
                       data-tip="Edit URL"
                       data-for={`tooltip-${index}`}
                     />
-                    <Tooltip id={`tooltip-${index}`} place="top" effect="solid" />
+                    <Tooltip id={`tooltip-${index}`} place="top" />
                   </td>
                   <td className="border p-2" style={{ width: columnWidths.referer }}>
                     <input
@@ -291,7 +291,7 @@ export default function Home() {
                       data-tip="Edit Referer"
                       data-for={`tooltip-${index}`}
                     />
-                    <Tooltip id={`tooltip-${index}`} place="top" effect="solid" />
+                    <Tooltip id={`tooltip-${index}`} place="top" />
                   </td>
                   <td className="border p-2" style={{ width: columnWidths.licenseType }}>
                     <input
@@ -303,7 +303,7 @@ export default function Home() {
                       data-tip="Edit License Type"
                       data-for={`tooltip-${index}`}
                     />
-                    <Tooltip id={`tooltip-${index}`} place="top" effect="solid" />
+                    <Tooltip id={`tooltip-${index}`} place="top" />
                   </td>
                   <td className="border p-2" style={{ width: columnWidths.licenseKey }}>
                     <input
@@ -315,7 +315,7 @@ export default function Home() {
                       data-tip="Edit License Key"
                       data-for={`tooltip-${index}`}
                     />
-                    <Tooltip id={`tooltip-${index}`} place="top" effect="solid" />
+                    <Tooltip id={`tooltip-${index}`} place="top" />
                   </td>
                 </tr>
               ))}
