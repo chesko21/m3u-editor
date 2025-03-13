@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     siteName: "IPTV Editor",
     images: [
       {
-        url: "https://yourwebsite.com/og-image.jpg", // Replace with your Open Graph image URL
+        url: "https://yourwebsite.com/og-image.jpg", 
         width: 1200,
         height: 630,
         alt: "IPTV Editor - Edit and Manage M3U Playlists",
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "IPTV Editor - Edit and Manage M3U Playlists Easily",
     description: "IPTV Editor is a powerful tool to edit, manage, and organize your M3U playlists. Perfect for IPTV enthusiasts and professionals.",
-    images: ["https://yourwebsite.com/twitter-image.jpg"], // Replace with your Twitter image URL
+    images: ["https://yourwebsite.com/twitter-image.jpg"], 
   },
   robots: {
     index: true,
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: "https://yourwebsite.com", // Replace with your canonical URL
+    canonical: "https://yourwebsite.com", 
   },
 };
 
