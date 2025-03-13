@@ -318,7 +318,9 @@ export default function Home() {
       ) : null}
 
       {/* Tooltip Component */}
-      <Tooltip id="tooltip" place="top" effect="solid" />
+      <Tooltip id="tooltip" place="top" effect="solid">
+        masukan konfigurasi anda
+      </Tooltip>
     </div>
   );
 }
