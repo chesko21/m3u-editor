@@ -4,28 +4,28 @@ import Menu from "./Menu";
 import { getInitialTheme } from "../lib/theme";
 
 export const metadata: Metadata = {
-  title: "IPTV Editor - Edit and Manage M3U Playlists Easily",
-  description: "IPTV Editor is a powerful tool to edit, manage, and organize your M3U playlists. Perfect for IPTV enthusiasts and professionals.",
+  title: "M3U Editor - Edit and Manage M3U Playlists Easily",
+  description: "M3U Editor is a powerful tool to edit, manage, and organize your M3U playlists. Perfect for IPTV enthusiasts and professionals.",
   keywords: [
-    "IPTV Editor",
+    "M3U Editor",
     "M3U Playlist Editor",
     "IPTV Playlist Manager",
     "M3U File Editor",
     "IPTV Tools",
     "Edit M3U Files",
   ],
-  authors: [{ name: "Your Name", url: "https://yourwebsite.com" }],
+  authors: [{ name: "m3u Editor", url: "https://m3u-editor-eta.vercel.app" }],
   openGraph: {
-    title: "IPTV Editor - Edit and Manage M3U Playlists Easily",
-    description: "IPTV Editor is a powerful tool to edit, manage, and organize your M3U playlists. Perfect for IPTV enthusiasts and professionals.",
-    url: "https://yourwebsite.com",
-    siteName: "IPTV Editor",
+    title: "M3U Editor - Edit and Manage M3U Playlists Easily",
+    description: "M3U Editor is a powerful tool to edit, manage, and organize your M3U playlists. Perfect for IPTV enthusiasts and professionals.",
+    url: "https://m3u-editor-eta.vercel.app",
+    siteName: "M3U Editor",
     images: [
       {
-        url: "https://yourwebsite.com/og-image.jpg", 
+        url: "https://github.com/chesko21/smart_tv/blob/master/assets/images/maskable.png",
         width: 1200,
         height: 630,
-        alt: "IPTV Editor - Edit and Manage M3U Playlists",
+        alt: "M3U Editor - Edit and Manage M3U Playlists",
       },
     ],
     locale: "en_US",
@@ -33,9 +33,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "IPTV Editor - Edit and Manage M3U Playlists Easily",
-    description: "IPTV Editor is a powerful tool to edit, manage, and organize your M3U playlists. Perfect for IPTV enthusiasts and professionals.",
-    images: ["https://yourwebsite.com/twitter-image.jpg"], 
+    title: "M3U Editor - Edit and Manage M3U Playlists Easily",
+    description: "M3U Editor is a powerful tool to edit, manage, and organize your M3U playlists. Perfect for IPTV enthusiasts and professionals.",
+    images: ["https://github.com/chesko21/smart_tv/blob/master/assets/images/maskable.png"], 
   },
   robots: {
     index: true,
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: "https://yourwebsite.com", 
+    canonical: "https://m3u-editor-eta.vercel.app", 
   },
 };
 
@@ -63,7 +63,7 @@ export default function RootLayout({
       <body className="bg-gray-50 dark:bg-gray-900 min-h-screen flex flex-col antialiased">
         <header className="bg-white dark:bg-gray-800 shadow-md">
           <div className="container mx-auto p-4 flex items-center justify-between">
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white">IPTV Editor</h1>
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white">M3U Editor</h1>
             <Menu />
           </div>
         </header>
