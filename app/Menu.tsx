@@ -3,10 +3,12 @@
 import { useState, useEffect } from "react";
 import { Menu as MenuIcon, X as CloseIcon, Sun, Moon } from "lucide-react";
 import { setTheme, getInitialTheme } from "../lib/theme";
+import { useRouter } from "next/navigation"; 
 
 const Menu = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [theme, setCurrentTheme] = useState<"light" | "dark">("light"); 
+  const [theme, setCurrentTheme] = useState<"light" | "dark">("light");
+  const router = useRouter();
 
   useEffect(() => {
     const initialTheme = getInitialTheme();
@@ -20,11 +22,14 @@ const Menu = () => {
     setTheme(newTheme);
   };
 
+  const handleNavigation = (path: string) => {
+    router.push(path); 
+    setIsMenuOpen(false); 
+  };
+
   return (
     <div className="relative">
-      {/* Container untuk Menu dan Tombol Tema */}
       <div className="flex items-center justify-between md:justify-end">
-        {/* Toggle Button for Mobile */}
         <button
           className="md:hidden p-2 text-gray-700 dark:text-white focus:outline-none"
           onClick={() => setIsMenuOpen((prev) => !prev)}
@@ -33,7 +38,6 @@ const Menu = () => {
           {isMenuOpen ? <CloseIcon className="h-8 w-8" /> : <MenuIcon className="h-8 w-8" />}
         </button>
 
-        {/* Navigation Menu */}
         <nav
           className={`fixed bg-white dark:bg-gray-900 md:bg-transparent w-full md:w-auto md:relative md:flex md:space-x-6 shadow-lg md:shadow-none transition-all duration-300 ease-in-out z-10 ${
             isMenuOpen ? "top-16" : "-top-64 md:top-0"
@@ -42,19 +46,17 @@ const Menu = () => {
           <ul className="flex flex-col md:flex-row md:space-x-6 p-4 md:p-0 text-gray-700 dark:text-white">
             {["Home", "Features", "About", "Contact"].map((item) => (
               <li key={item}>
-                <a
-                  href="#"
+                <button
+                  onClick={() => handleNavigation(item === "Home" ? "/" : `/${item.toLowerCase()}`)} // Navigasi ke halaman
                   className="block py-2 px-4 hover:text-yellow-400 transition"
-                  onClick={() => setIsMenuOpen(false)}
                 >
                   {item}
-                </a>
+                </button>
               </li>
             ))}
           </ul>
         </nav>
 
-        {/* Theme Toggle Button */}
         <button
           onClick={toggleTheme}
           className="ml-4 p-2 text-gray-700 dark:text-white transition hover:text-yellow-400"

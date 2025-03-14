@@ -1,41 +1,168 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useMemo, memo } from "react";
+import { useDropzone } from 'react-dropzone'; 
 import { parseM3U, generateM3U, Channel } from "../lib/m3uParser";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload, faDownload, faLink } from "@fortawesome/free-solid-svg-icons";
-import { Tooltip } from "react-tooltip";
 import SkeletonLoader from "../components/SkeletonLoader"; 
+import Modal from "../components/Modal"; 
 
-export default function Home() {
+const ChannelItem = memo(({ channel, onEditClick }) => {
+  return (
+    <div className="flex flex-col items-center p-2 border border-gray-300 rounded shadow">
+      {channel.logo ? (
+        <img
+          src={channel.logo}
+          alt={channel.name}
+          className="h-20 w-20 object-cover mb-2"
+          loading="lazy"
+        />
+      ) : (
+        <div className="h-20 w-20 bg-gray-300 flex items-center justify-center mb-2">
+          <span className="text-gray-500">No Image</span>
+        </div>
+      )}
+      <span className="text-center font-bold">{channel.name}</span>
+      <button onClick={() => onEditClick(channel)} className="mt-2 bg-blue-500 text-white px-2 py-1 rounded-md">
+        Edit
+      </button>
+    </div>
+  );
+});
+
+const ModalContent = memo(({ currentChannel, handleChangeChannelDetail, handleSaveChanges }) => {
+  if (!currentChannel) return null;
+
+  return (
+    <div className="space-y-4">
+      <div>
+        <label className="block text-sm font-medium text-gray-700">Duration</label>
+        <input
+          type="text"
+          value={currentChannel.duration || "-1"}
+          onChange={(e) => handleChangeChannelDetail("duration", e.target.value)}
+          className="border p-1 w-full rounded-md"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700">Channel Name</label>
+        <input
+          type="text"
+          value={currentChannel.name}
+          onChange={(e) => handleChangeChannelDetail("name", e.target.value)}
+          className="border p-1 w-full rounded-md"
+          required
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700">TVG ID</label>
+        <input
+          type="text"
+          value={currentChannel.tvgId || ""}
+          onChange={(e) => handleChangeChannelDetail("tvgId", e.target.value)}
+          className="border p-1 w-full rounded-md"
+          required
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700">TVG Logo</label>
+        <input
+          type="text"
+          value={currentChannel.logo}
+          onChange={(e) => handleChangeChannelDetail("logo", e.target.value)}
+          className="border p-1 w-full rounded-md"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700">Group Title</label>
+        <input
+          type="text"
+          value={currentChannel.group}
+          onChange={(e) => handleChangeChannelDetail("group", e.target.value)}
+          className="border p-1 w-full rounded-md"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700">License Type</label>
+        <input
+          type="text"
+          value={currentChannel.licenseType || ""}
+          onChange={(e) => handleChangeChannelDetail("licenseType", e.target.value)}
+          className="border p-1 w-full rounded-md"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700">License Key</label>
+        <input
+          type="text"
+          value={currentChannel.licenseKey || ""}
+          onChange={(e) => handleChangeChannelDetail("licenseKey", e.target.value)}
+          className="border p-1 w-full rounded-md"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700">HTTP Referer</label>
+        <input
+          type="text"
+          value={currentChannel.referer || ""}
+          onChange={(e) => handleChangeChannelDetail("referer", e.target.value)}
+          className="border p-1 w-full rounded-md"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700">Stream URL</label>
+        <input
+          type="text"
+          value={currentChannel.url}
+          onChange={(e) => handleChangeChannelDetail("url", e.target.value)}
+          className="border p-1 w-full rounded-md"
+        />
+      </div>
+
+      <button
+        onClick={handleSaveChanges}
+        className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition"
+      >
+        Save Changes
+      </button>
+    </div>
+  );
+});
+
+export default function Page() {
   const [channels, setChannels] = useState<Channel[]>([]);
   const [fileName, setFileName] = useState<string>("");
   const [urlInput, setUrlInput] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [parsing, setParsing] = useState<boolean>(false);
-  const [columnWidths, setColumnWidths] = useState<{ [key: string]: number }>({
-    logo: 100,
-    logoUrl: 150,
-    name: 150,
-    group: 150,
-    url: 200,
-    referer: 150,
-    licenseType: 150,
-    licenseKey: 150,
-  });
 
-  const handleFileUpload = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    const uploadedFile = event.target.files?.[0];
+  const [isModalOpen, setModalOpen] = useState<boolean>(false);
+  const [currentChannel, setCurrentChannel] = useState<Channel | null>(null);
+
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    const uploadedFile = acceptedFiles[0];
     if (!uploadedFile) return;
 
-    setFileName(uploadedFile.name);
-    event.target.value = "";
+    console.log("File selected:", uploadedFile.name);
 
     const reader = new FileReader();
-    reader.onloadstart = () => { setParsing(true); };
+    reader.onloadstart = () => {
+      console.log("Reading file...");
+      setParsing(true);
+    };
     reader.onload = (e) => {
       const content = e.target?.result as string;
+      console.log("File content:", content);
       try {
         setChannels(parseM3U(content));
         setError(null);
@@ -45,27 +172,40 @@ export default function Home() {
         setParsing(false);
       }
     };
+    reader.onerror = (e) => {
+      console.error("Error reading file:", e);
+      setError("Failed to read file");
+      setParsing(false);
+    };
     reader.readAsText(uploadedFile);
   }, []);
+
+  const { getRootProps, getInputProps } = useDropzone({
+    accept: {
+      'text/plain': ['.m3u'],
+    },
+    onDrop,
+  });
 
   const handleUrlSubmit = useCallback(async () => {
     if (!urlInput.trim()) {
       setError("Please enter a valid URL.");
       return;
     }
-
+  
     setLoading(true);
     setError(null);
     setParsing(true);
-
+  
     try {
       const response = await fetch(urlInput);
-      if (!response.ok) throw new Error("Network response was not ok");
+      if (!response.ok) throw new Error(`Network response was not ok: ${response.statusText}`);
       const content = await response.text();
+      if (!content) throw new Error("No content received from the URL");
       setChannels(parseM3U(content));
       setFileName("playlist_from_url.m3u");
     } catch (err) {
-      setError("Failed to fetch M3U file from URL");
+      setError(`Failed to fetch M3U file from URL: ${err.message}`);
     } finally {
       setLoading(false);
       setParsing(false);
@@ -82,11 +222,32 @@ export default function Home() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [handleUrlSubmit]);
 
-  const handleChange = useCallback((index: number, key: keyof Channel, value: string) => {
-    setChannels((prev) =>
-      prev.map((channel, i) => (i === index ? { ...channel, [key]: value } : channel))
-    );
+  const handleEditClick = useCallback((channel: Channel) => {
+    setCurrentChannel({ ...channel });
+    setModalOpen(true);
   }, []);
+
+  const handleModalClose = useCallback(() => {
+    setModalOpen(false);
+    setCurrentChannel(null);
+  }, []);
+
+  const handleChangeChannelDetail = useCallback((key: keyof Channel, value: string) => {
+    if (currentChannel) {
+      setCurrentChannel((prev) => ({ ...prev!, [key]: value }));
+    }
+  }, [currentChannel]);
+
+  const handleSaveChanges = useCallback(() => {
+    if (currentChannel) {
+      setChannels((prevChannels) =>
+        prevChannels.map((channel) =>
+          channel.tvgId === currentChannel.tvgId ? { ...currentChannel } : channel
+        )
+      );
+      handleModalClose();
+    }
+  }, [currentChannel, handleModalClose]);
 
   const handleDownload = useCallback(() => {
     try {
@@ -101,59 +262,21 @@ export default function Home() {
     }
   }, [channels, fileName]);
 
-  // Resize Column Logic
-  const resizingColumn = useRef<string | null>(null);
-  const startX = useRef<number>(0);
-  const startWidth = useRef<number>(0);
-
-  const handleResizeStart = (columnKey: string, event: React.MouseEvent) => {
-    resizingColumn.current = columnKey;
-    startX.current = event.clientX;
-    startWidth.current = columnWidths[columnKey];
-    document.addEventListener("mousemove", handleResize);
-    document.addEventListener("mouseup", handleResizeEnd);
-  };
-
-  const handleResize = (event: MouseEvent) => {
-    if (resizingColumn.current) {
-      const newWidth = startWidth.current + (event.clientX - startX.current);
-      setColumnWidths((prev) => ({
-        ...prev,
-        [resizingColumn.current!]: Math.max(50, newWidth),
-      }));
-    }
-  };
-
-  const handleResizeEnd = () => {
-    resizingColumn.current = null;
-    document.removeEventListener("mousemove", handleResize);
-    document.removeEventListener("mouseup", handleResizeEnd);
-  };
-
   return (
     <div className="flex flex-col h-screen">
-      {/* Header Section */}
       <div className="p-4 bg-white shadow-md">
         <h1 className="text-2xl md:text-3xl font-bold text-center">M3U Playlist Manager</h1>
         {error && <div className="mb-4 text-red-500 text-center">{error}</div>}
 
-        {/* File Upload and URL Input Section */}
         <div className="flex flex-col md:flex-row gap-4 mb-6">
-          <label
-            htmlFor="file-upload"
+          <div
+            {...getRootProps()}
             className="cursor-pointer inline-flex items-center justify-center bg-blue-600 text-white px-4 py-2 rounded-md shadow hover:bg-blue-700 transition"
           >
+            <input {...getInputProps()} aria-label="Upload M3U file" />
             <FontAwesomeIcon icon={faUpload} className="mr-2" />
             Choose M3U File
-          </label>
-          <input
-            id="file-upload"
-            type="file"
-            accept=".m3u"
-            onChange={handleFileUpload}
-            className="hidden"
-            aria-label="Upload M3U file"
-          />
+          </div>
 
           <div className="flex-grow">
             <input
@@ -168,9 +291,8 @@ export default function Home() {
 
           <button
             onClick={handleUrlSubmit}
-            className={`bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition ${
-              loading ? "cursor-not-allowed opacity-75" : ""
-            }`}
+            className={`bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition ${loading ? "cursor-not-allowed opacity-75" : ""
+              }`}
             aria-label="Load M3U from URL"
             disabled={loading}
           >
@@ -179,7 +301,6 @@ export default function Home() {
           </button>
         </div>
 
-        {/* Download Button */}
         <div className="mb-4">
           <button
             onClick={handleDownload}
@@ -192,7 +313,6 @@ export default function Home() {
           </button>
         </div>
 
-        {/* Parsing Indicator */}
         {parsing && (
           <div className="mb-4 text-blue-500 text-center">
             <p>Loading and parsing channels, please wait...</p>
@@ -200,129 +320,27 @@ export default function Home() {
         )}
       </div>
 
-      {/* Channel List Table */}
       {loading || parsing ? (
-        <SkeletonLoader /> // Show Skeleton Loader during loading or parsing
+        <SkeletonLoader />
       ) : channels.length > 0 ? (
-        <div className="flex-1 overflow-auto bg-white">
-          <table className="min-w-full border-collapse border border-gray-300">
-            <thead className="bg-gray-200 sticky top-0">
-              <tr>
-                {["Logo", "Logo URL", "Name", "Group", "URL", "Referer", "License Type", "License Key"].map((header, index) => (
-                  <th
-                    key={header}
-                    className="border p-2 text-left relative"
-                    style={{ width: columnWidths[Object.keys(columnWidths)[index]] }}
-                  >
-                    {header}
-                    <div
-                      className="absolute right-0 top-0 bottom-0 w-1 cursor-col-resize bg-gray-400 hover:bg-gray-600"
-                      onMouseDown={(e) => handleResizeStart(Object.keys(columnWidths)[index], e)}
-                    />
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {channels.map((channel, index) => (
-                <tr key={index} className="border hover:bg-gray-100 transition">
-                  <td className="border p-2" style={{ width: columnWidths.logo }}>
-                    {channel.logo ? (
-                      <img
-                        src={channel.logo}
-                        alt="Channel logo"
-                        className="h-10 w-10 object-cover border"
-                      />
-                    ) : (
-                      <span className="text-gray-500">No Image</span>
-                    )}
-                  </td>
-                  <td className="border p-2" style={{ width: columnWidths.logoUrl }}>
-                    <input
-                      type="text"
-                      placeholder="Logo URL"
-                      value={channel.logo || ""}
-                      onChange={(e) => handleChange(index, "logo", e.target.value)}
-                      className="border p-1 w-full rounded-md transition focus:border-blue-500 focus:ring focus:ring-blue-200"
-                      data-tip="Edit Logo URL"
-                      data-for={`tooltip-${index}`}
-                    />
-                    <Tooltip id={`tooltip-${index}`} place="top" />
-                  </td>
-                  <td className="border p-2" style={{ width: columnWidths.name }}>
-                    <input
-                      type="text"
-                      value={channel.name}
-                      onChange={(e) => handleChange(index, "name", e.target.value)}
-                      className="border p-1 w-full rounded-md transition focus:border-blue-500 focus:ring focus:ring-blue-200"
-                      data-tip="Edit Channel Name"
-                      data-for={`tooltip-${index}`}
-                    />
-                    <Tooltip id={`tooltip-${index}`} place="top" />
-                  </td>
-                  <td className="border p-2" style={{ width: columnWidths.group }}>
-                    <input
-                      type="text"
-                      value={channel.group}
-                      onChange={(e) => handleChange(index, "group", e.target.value)}
-                      className="border p-1 w-full rounded-md transition focus:border-blue-500 focus:ring focus:ring-blue-200"
-                      data-tip="Edit Group"
-                      data-for={`tooltip-${index}`}
-                    />
-                    <Tooltip id={`tooltip-${index}`} place="top" />
-                  </td>
-                  <td className="border p-2" style={{ width: columnWidths.url }}>
-                    <input
-                      type="text"
-                      value={channel.url}
-                      onChange={(e) => handleChange(index, "url", e.target.value)}
-                      className="border p-1 w-full rounded-md transition focus:border-blue-500 focus:ring focus:ring-blue-200"
-                      data-tip="Edit URL"
-                      data-for={`tooltip-${index}`}
-                    />
-                    <Tooltip id={`tooltip-${index}`} place="top" />
-                  </td>
-                  <td className="border p-2" style={{ width: columnWidths.referer }}>
-                    <input
-                      type="text"
-                      value={channel.referer || ""}
-                      onChange={(e) => handleChange(index, "referer", e.target.value)}
-                      className="border p-1 w-full rounded-md transition focus:border-blue-500 focus:ring focus:ring-blue-200"
-                      data-tip="Edit Referer"
-                      data-for={`tooltip-${index}`}
-                    />
-                    <Tooltip id={`tooltip-${index}`} place="top" />
-                  </td>
-                  <td className="border p-2" style={{ width: columnWidths.licenseType }}>
-                    <input
-                      type="text"
-                      placeholder="License Type"
-                      value={channel.licenseType || ""}
-                      onChange={(e) => handleChange(index, "licenseType", e.target.value)}
-                      className="border p-1 w-full rounded-md transition focus:border-blue-500 focus:ring focus:ring-blue-200"
-                      data-tip="Edit License Type"
-                      data-for={`tooltip-${index}`}
-                    />
-                    <Tooltip id={`tooltip-${index}`} place="top" />
-                  </td>
-                  <td className="border p-2" style={{ width: columnWidths.licenseKey }}>
-                    <input
-                      type="text"
-                      placeholder="License Key"
-                      value={channel.licenseKey || ""}
-                      onChange={(e) => handleChange(index, "licenseKey", e.target.value)}
-                      className="border p-1 w-full rounded-md transition focus:border-blue-500 focus:ring focus:ring-blue-200"
-                      data-tip="Edit License Key"
-                      data-for={`tooltip-${index}`}
-                    />
-                    <Tooltip id={`tooltip-${index}`} place="top" />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="flex-1 p-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 bg-white">
+          {channels.map((channel, index) => (
+            <ChannelItem key={index} channel={channel} onEditClick={handleEditClick} />
+          ))}
         </div>
-      ) : null}
+      ) : (
+        <div className="flex-1 flex items-center justify-center">
+          <span className="text-gray-500">No channels available.</span>
+        </div>
+      )}
+
+      <Modal isOpen={isModalOpen} onClose={handleModalClose} title="Edit Channel Details">
+        <ModalContent
+          currentChannel={currentChannel}
+          handleChangeChannelDetail={handleChangeChannelDetail}
+          handleSaveChanges={handleSaveChanges}
+        />
+      </Modal>
     </div>
   );
 }

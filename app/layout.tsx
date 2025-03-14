@@ -59,7 +59,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`h-full ${getInitialTheme()}`}>
+    <html lang="en" className={getInitialTheme()}>
       <body className="bg-gray-50 dark:bg-gray-900 min-h-screen flex flex-col antialiased">
         <header className="bg-white dark:bg-gray-800 shadow-md">
           <div className="container mx-auto p-4 flex items-center justify-between">
@@ -68,11 +68,6 @@ export default function RootLayout({
           </div>
         </header>
         <main className="container mx-auto p-4 md:p-6 flex-grow">{children}</main>
-        <footer className="bg-white dark:bg-gray-800 shadow-md mt-6">
-          <div className="container mx-auto p-4 text-center text-sm text-gray-600 dark:text-gray-300">
-            © 2023 IPTV Editor. All rights reserved.
-          </div>
-        </footer>
       </body>
     </html>
   );
