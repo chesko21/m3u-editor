@@ -8,7 +8,12 @@ import { faUpload, faDownload, faLink } from "@fortawesome/free-solid-svg-icons"
 import SkeletonLoader from "../components/SkeletonLoader"; 
 import Modal from "../components/Modal"; 
 
-const ChannelItem = memo(({ channel, onEditClick }) => {
+interface ChannelItemProps {
+  channel: Channel;
+  onEditClick: (channel: Channel) => void;
+}
+
+const ChannelItem = memo(({ channel, onEditClick }: ChannelItemProps) => {
   return (
     <div className="flex flex-col items-center p-2 border border-gray-300 rounded shadow">
       {channel.logo ? (
@@ -232,11 +237,10 @@ export default function Page() {
     setCurrentChannel(null);
   }, []);
 
-  const handleChangeChannelDetail = useCallback((key: keyof Channel, value: string) => {
-    if (currentChannel) {
-      setCurrentChannel((prev) => ({ ...prev!, [key]: value }));
-    }
-  }, [currentChannel]);
+const handleChangeChannelDetail = useCallback((key: keyof Channel, value: string) => {
+  setCurrentChannel((prev) => prev ? { ...prev, [key]: value } : null);
+}, []);
+
 
   const handleSaveChanges = useCallback(() => {
     if (currentChannel) {
@@ -324,9 +328,10 @@ export default function Page() {
         <SkeletonLoader />
       ) : channels.length > 0 ? (
         <div className="flex-1 p-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 bg-white">
-          {channels.map((channel, index) => (
-            <ChannelItem key={index} channel={channel} onEditClick={handleEditClick} />
-          ))}
+         {channels.map((channel, index) => (
+  <ChannelItem key={index} channel={channel} onEditClick={handleEditClick} />
+))}
+
         </div>
       ) : (
         <div className="flex-1 flex items-center justify-center">
