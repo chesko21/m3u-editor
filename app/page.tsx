@@ -8,11 +8,19 @@ import { faUpload, faDownload, faLink } from "@fortawesome/free-solid-svg-icons"
 import SkeletonLoader from "../components/SkeletonLoader"; 
 import Modal from "../components/Modal"; 
 
+// Define interfaces
 interface ChannelItemProps {
   channel: Channel;
   onEditClick: (channel: Channel) => void;
 }
 
+interface ModalContentProps {
+  currentChannel: Channel | null;
+  handleChangeChannelDetail: (key: keyof Channel, value: string) => void;
+  handleSaveChanges: () => void;
+}
+
+// ChannelItem component
 const ChannelItem = memo(({ channel, onEditClick }: ChannelItemProps) => {
   return (
     <div className="flex flex-col items-center p-2 border border-gray-300 rounded shadow">
@@ -36,7 +44,8 @@ const ChannelItem = memo(({ channel, onEditClick }: ChannelItemProps) => {
   );
 });
 
-const ModalContent = memo(({ currentChannel, handleChangeChannelDetail, handleSaveChanges }) => {
+// ModalContent component
+const ModalContent = memo(({ currentChannel, handleChangeChannelDetail, handleSaveChanges }: ModalContentProps) => {
   if (!currentChannel) return null;
 
   return (
@@ -45,7 +54,7 @@ const ModalContent = memo(({ currentChannel, handleChangeChannelDetail, handleSa
         <label className="block text-sm font-medium text-gray-700">Duration</label>
         <input
           type="text"
-          value={currentChannel.duration || "-1"}
+          value={currentChannel.duration ?? "-1"} // Gunakan nilai default jika duration tidak ada
           onChange={(e) => handleChangeChannelDetail("duration", e.target.value)}
           className="border p-1 w-full rounded-md"
         />
@@ -143,6 +152,7 @@ const ModalContent = memo(({ currentChannel, handleChangeChannelDetail, handleSa
   );
 });
 
+// Main Page component
 export default function Page() {
   const [channels, setChannels] = useState<Channel[]>([]);
   const [fileName, setFileName] = useState<string>("");
@@ -169,7 +179,12 @@ export default function Page() {
       const content = e.target?.result as string;
       console.log("File content:", content);
       try {
-        setChannels(parseM3U(content));
+        const parsedChannels = parseM3U(content);
+        const uniqueChannels = parsedChannels.filter(
+          (channel, index, self) =>
+            index === self.findIndex((c) => c.tvgId === channel.tvgId && c.url === channel.url)
+        );
+        setChannels(uniqueChannels);
         setError(null);
       } catch (error) {
         setError("Invalid M3U file format");
@@ -207,10 +222,19 @@ export default function Page() {
       if (!response.ok) throw new Error(`Network response was not ok: ${response.statusText}`);
       const content = await response.text();
       if (!content) throw new Error("No content received from the URL");
-      setChannels(parseM3U(content));
+      const parsedChannels = parseM3U(content);
+      const uniqueChannels = parsedChannels.filter(
+        (channel, index, self) =>
+          index === self.findIndex((c) => c.tvgId === channel.tvgId && c.url === channel.url)
+      );
+      setChannels(uniqueChannels);
       setFileName("playlist_from_url.m3u");
     } catch (err) {
-      setError(`Failed to fetch M3U file from URL: ${err.message}`);
+      if (err instanceof Error) {
+        setError(`Failed to fetch M3U file from URL: ${err.message}`);
+      } else {
+        setError("Failed to fetch M3U file from URL: An unknown error occurred.");
+      }
     } finally {
       setLoading(false);
       setParsing(false);
@@ -237,10 +261,9 @@ export default function Page() {
     setCurrentChannel(null);
   }, []);
 
-const handleChangeChannelDetail = useCallback((key: keyof Channel, value: string) => {
-  setCurrentChannel((prev) => prev ? { ...prev, [key]: value } : null);
-}, []);
-
+  const handleChangeChannelDetail = useCallback((key: keyof Channel, value: string) => {
+    setCurrentChannel((prev) => prev ? { ...prev, [key]: value } : null);
+  }, []);
 
   const handleSaveChanges = useCallback(() => {
     if (currentChannel) {
@@ -328,10 +351,13 @@ const handleChangeChannelDetail = useCallback((key: keyof Channel, value: string
         <SkeletonLoader />
       ) : channels.length > 0 ? (
         <div className="flex-1 p-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 bg-white">
-         {channels.map((channel, index) => (
-  <ChannelItem key={index} channel={channel} onEditClick={handleEditClick} />
-))}
-
+          {channels.map((channel, index) => (
+            <ChannelItem
+              key={`${channel.tvgId || 'no-tvgId'}-${channel.url || 'no-url'}-${index}`} // Gabungkan tvgId, url, dan index
+              channel={channel}
+              onEditClick={handleEditClick}
+            />
+          ))}
         </div>
       ) : (
         <div className="flex-1 flex items-center justify-center">

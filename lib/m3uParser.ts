@@ -8,6 +8,7 @@ export interface Channel {
   licenseType?: string;
   licenseKey?: string;
   tvgId?: string;
+  duration?: number | string;
 }
 
 
