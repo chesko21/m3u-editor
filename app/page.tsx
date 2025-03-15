@@ -54,7 +54,7 @@ const ModalContent = memo(({ currentChannel, handleChangeChannelDetail, handleSa
         <label className="block text-sm font-medium text-gray-700">Duration</label>
         <input
           type="text"
-          value={currentChannel.duration ?? "-1"} // Gunakan nilai default jika duration tidak ada
+          value={currentChannel.duration ?? "-1"} 
           onChange={(e) => handleChangeChannelDetail("duration", e.target.value)}
           className="border p-1 w-full rounded-md"
         />

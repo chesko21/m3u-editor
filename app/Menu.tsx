@@ -31,7 +31,7 @@ const Menu = () => {
     <div className="relative">
       <div className="flex items-center justify-between md:justify-end">
         <button
-          className="md:hidden p-2 text-gray-700 dark:text-white focus:outline-none"
+          className="md:hidden p-2 text-gray-900 dark:text-white focus:outline-none"
           onClick={() => setIsMenuOpen((prev) => !prev)}
           aria-label="Toggle Menu"
         >

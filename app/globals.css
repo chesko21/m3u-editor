@@ -1,7 +1,6 @@
 /* app/globals.css */
 @import "tailwindcss";
 
-/* Hapus margin dan padding default dari elemen root */
 html, body {
   margin: 0;
   padding: 0;
@@ -46,8 +45,8 @@ select {
   border-color: var(--input-border);
   color: var(--text-color);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  width: 100%; /* Make input fields responsive */
-  max-width: 100%; /* Ensure they don't overflow */
+  width: 100%; 
+  max-width: 100%;
 }
 
 input[type="text"]:focus,
@@ -56,25 +55,6 @@ textarea:focus,
 select:focus {
   border-color: #3b82f6;
   box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
-}
-
-/* Tabel */
-table {
-  width: 100%;
-  border-spacing: 0;
-}
-
-th {
-  background-color: var(--table-header-bg);
-  color: var(--text-color);
-}
-
-td {
-  border-color: var(--input-border);
-}
-
-tr:hover {
-  background-color: var(--table-row-hover);
 }
 
 /* Tombol */

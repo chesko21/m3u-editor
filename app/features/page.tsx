@@ -1,13 +1,13 @@
 export default function Features() {
   return (
-    <div className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900">
+    <div className="py-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Judul dan Deskripsi */}
         <div className="text-center mb-16">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white sm:text-4xl">
+          <h2 className="text-3xl font-bold sm:text-4xl">
             Features
           </h2>
-          <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">
+          <p className="mt-4 text-lg ">
             Discover the powerful features of our M3U Playlist Manager designed to make your IPTV experience seamless and efficient.
           </p>
         </div>
@@ -32,10 +32,10 @@ export default function Features() {
                 />
               </svg>
             </div>
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+            <h3 className="text-xl text-gray-900 dark:text-white font-bold mb-2">
               Upload M3U File
             </h3>
-            <p className="text-gray-600 dark:text-gray-300">
+            <p className="">
               Easily upload your M3U files to manage and edit your IPTV playlists.
             </p>
           </div>
@@ -61,7 +61,7 @@ export default function Features() {
             <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
               Edit Channel Details
             </h3>
-            <p className="text-gray-600 dark:text-gray-300">
+            <p className="">
               Modify channel names, logos, URLs, and other details with ease.
             </p>
           </div>
@@ -87,7 +87,7 @@ export default function Features() {
             <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
               Fetch from URL
             </h3>
-            <p className="text-gray-600 dark:text-gray-300">
+            <p className="">
               Load M3U playlists directly from a URL for quick access and editing.
             </p>
           </div>
@@ -113,7 +113,7 @@ export default function Features() {
             <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
               Download M3U File
             </h3>
-            <p className="text-gray-600 dark:text-gray-300">
+            <p className="">
               Save your edited playlists as M3U files for offline use.
             </p>
           </div>
@@ -139,7 +139,7 @@ export default function Features() {
             <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
               Light & Dark Mode
             </h3>
-            <p className="text-gray-600 dark:text-gray-300">
+            <p className="">
               Switch between light and dark themes for a comfortable viewing experience.
             </p>
           </div>
@@ -165,7 +165,7 @@ export default function Features() {
             <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
               Responsive Design
             </h3>
-            <p className="text-gray-600 dark:text-gray-300">
+            <p className="">
               Access and manage your playlists on any device with a fully responsive design.
             </p>
           </div>

@@ -1,5 +1,3 @@
-// lib/theme.ts
-
 /**
  * Sets the theme and saves it to localStorage.
  * @param theme - The theme to set (`light` or `dark`).
@@ -8,6 +6,7 @@ export function setTheme(theme: "light" | "dark") {
   if (typeof window !== "undefined") {
     localStorage.setItem("theme", theme);
     document.documentElement.classList.toggle("dark", theme === "dark");
+    document.documentElement.dataset.theme = theme;
   }
 }
 
@@ -26,4 +25,12 @@ export function getInitialTheme(): "light" | "dark" {
     return prefersDarkMode ? "dark" : "light";
   }
   return "light"; 
+}
+
+/**
+ * Apply the theme on page load.
+ */
+export function applyInitialTheme() {
+  const theme = getInitialTheme();
+  setTheme(theme);
 }

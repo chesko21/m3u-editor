@@ -1,30 +1,30 @@
 export default function Contact() {
   return (
-    <div className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900">
+    <div className="py-12 px-4 sm:px-6 lg:px-8 bg-white shadow-md">
       <div className="max-w-7xl mx-auto">
         {/* Judul dan Deskripsi */}
-        <div className="text-center mb-16">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white sm:text-4xl">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold sm:text-4xl">
             Contact Us
           </h2>
-          <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">
+          <p className="mt-3 text-lg leading-relaxed">
             We'd love to hear from you! Whether you have a question, feedback, or
             just want to say hello, feel free to reach out.
           </p>
         </div>
 
         {/* Grid untuk Formulir dan Informasi Kontak */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Formulir Kontak */}
-          <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg">
+          <div className="bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-lg shadow-lg">
             <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
               Send Us a Message
             </h3>
             <form>
-              <div className="mb-6">
+              <div className="mb-4">
                 <label
                   htmlFor="name"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
                 >
                   Your Name
                 </label>
@@ -32,15 +32,15 @@ export default function Contact() {
                   type="text"
                   id="name"
                   name="name"
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white hover:border-gray-400 transition-colors duration-200"
                   placeholder="Enter your name"
                   required
                 />
               </div>
-              <div className="mb-6">
+              <div className="mb-4">
                 <label
                   htmlFor="email"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
                 >
                   Your Email
                 </label>
@@ -48,30 +48,30 @@ export default function Contact() {
                   type="email"
                   id="email"
                   name="email"
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white hover:border-gray-400 transition-colors duration-200"
                   placeholder="Enter your email"
                   required
                 />
               </div>
-              <div className="mb-6">
+              <div className="mb-4">
                 <label
                   htmlFor="message"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
                 >
                   Your Message
                 </label>
                 <textarea
                   id="message"
                   name="message"
-                  rows={5}
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                  rows={4}
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white hover:border-gray-400 transition-colors duration-200"
                   placeholder="Enter your message"
                   required
                 ></textarea>
               </div>
               <button
                 type="submit"
-                className="w-full bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition"
+                className="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors duration-200 transform hover:scale-105"
               >
                 Send Message
               </button>
@@ -79,16 +79,16 @@ export default function Contact() {
           </div>
 
           {/* Informasi Kontak dan Peta */}
-          <div className="space-y-8">
+          <div className="space-y-6">
             {/* Informasi Kontak */}
-            <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg">
+            <div className="bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-lg shadow-lg">
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
                 Contact Information
               </h3>
-              <div className="space-y-4">
+              <div className="space-y-3">
                 <div className="flex items-center">
                   <svg
-                    className="w-6 h-6 text-blue-600 dark:text-blue-300 mr-4"
+                    className="w-5 h-5 text-blue-600 dark:text-blue-300 mr-3"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -113,7 +113,7 @@ export default function Contact() {
                 </div>
                 <div className="flex items-center">
                   <svg
-                    className="w-6 h-6 text-blue-600 dark:text-blue-300 mr-4"
+                    className="w-5 h-5 text-blue-600 dark:text-blue-300 mr-3"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -132,7 +132,7 @@ export default function Contact() {
                 </div>
                 <div className="flex items-center">
                   <svg
-                    className="w-6 h-6 text-blue-600 dark:text-blue-300 mr-4"
+                    className="w-5 h-5 text-blue-600 dark:text-blue-300 mr-3"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -152,20 +152,16 @@ export default function Contact() {
               </div>
             </div>
 
-            {/* Peta Lokasi */}
-            <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg">
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+            {/* Peta (Opsional) */}
+            <div className="bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-lg shadow-lg">
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
                 Our Location
               </h3>
-              <div className="overflow-hidden rounded-lg">
+              <div className="aspect-w-16 aspect-h-9">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.8354345093747!2d144.95373531531664!3d-37.816279742021665!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642af0f11fd81%3A0xf577d2fed4b5b6c1!2s123%20Main%20St%2C%20City%2C%20Country!5e0!3m2!1sen!2sus!4v1625070000000!5m2!1sen!2sus"
-                  width="100%"
-                  height="300"
-                  style={{ border: 0 }}
+                  src="https://www.google.com/maps/embed?pb=..."
+                  className="w-full h-full rounded-md"
                   allowFullScreen
-                  loading="lazy"
-                  className="rounded-lg"
                 ></iframe>
               </div>
             </div>
