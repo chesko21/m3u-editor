@@ -8,8 +8,6 @@ import { faUpload, faDownload, faLink } from "@fortawesome/free-solid-svg-icons"
 import SkeletonLoader from "../components/SkeletonLoader";
 import Modal from "../components/Modal";
 import SplashScreen from "../components/SplashScreen";
-import dynamic from 'next/dynamic';
-
 
 // Define interfaces
 interface ChannelItemProps {
@@ -25,7 +23,6 @@ interface ModalContentProps {
 
 // ChannelItem component
 const ChannelItem = memo(({ channel, onEditClick }: ChannelItemProps) => {
-
   const displayName = channel.name.length > 8 ? `${channel.name.slice(0, 10)}...` : channel.name;
 
   return (
@@ -50,6 +47,7 @@ const ChannelItem = memo(({ channel, onEditClick }: ChannelItemProps) => {
   );
 });
 
+// ModalContent component
 // ModalContent component
 const ModalContent = memo(({ currentChannel, handleChangeChannelDetail, handleSaveChanges }: ModalContentProps) => {
   if (!currentChannel) return null;
@@ -160,17 +158,15 @@ const ModalContent = memo(({ currentChannel, handleChangeChannelDetail, handleSa
 
 // Main Page component
 export default function Page() {
-  const [channels, setChannels] = useState < Channel[] > ([]);
-  const [fileName, setFileName] = useState < string > ("");
-  const [urlInput, setUrlInput] = useState < string > ("");
-  const [error, setError] = useState < string | null > (null);
-  const [loading, setLoading] = useState < boolean > (false);
-  const [parsing, setParsing] = useState < boolean > (false);
-
-  const [isModalOpen, setModalOpen] = useState < boolean > (false);
-  const [currentChannel, setCurrentChannel] = useState < Channel | null > (null);
-
-  const [selectedGroup, setSelectedGroup] = useState < string | null > (null);
+  const [channels, setChannels] = useState<Channel[]>([]);
+  const [fileName, setFileName] = useState<string>("");
+  const [urlInput, setUrlInput] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [parsing, setParsing] = useState<boolean>(false);
+  const [isModalOpen, setModalOpen] = useState<boolean>(false);
+  const [currentChannel, setCurrentChannel] = useState<Channel | null>(null);
+  const [selectedGroup, setSelectedGroup] = useState<string | null>(null);
 
   // Load channels from localStorage on component mount
   useEffect(() => {
@@ -189,16 +185,12 @@ export default function Page() {
     const uploadedFile = acceptedFiles[0];
     if (!uploadedFile) return;
 
-    console.log("File selected:", uploadedFile.name);
-
     const reader = new FileReader();
     reader.onloadstart = () => {
-      console.log("Reading file...");
       setParsing(true);
     };
     reader.onload = (e) => {
       const content = e.target?.result as string;
-      console.log("File content:", content);
       try {
         const parsedChannels = parseM3U(content);
         const uniqueChannels = parsedChannels.filter(
@@ -213,8 +205,7 @@ export default function Page() {
         setParsing(false);
       }
     };
-    reader.onerror = (e) => {
-      console.error("Error reading file:", e);
+    reader.onerror = () => {
       setError("Failed to read file");
       setParsing(false);
     };
@@ -222,9 +213,7 @@ export default function Page() {
   }, []);
 
   const { getRootProps, getInputProps } = useDropzone({
-    accept: {
-      'text/plain': ['.m3u'],
-    },
+    accept: { 'text/plain': ['.m3u'] },
     onDrop,
   });
 
@@ -242,7 +231,6 @@ export default function Page() {
       const response = await fetch(urlInput);
       if (!response.ok) throw new Error(`Network response was not ok: ${response.statusText}`);
       const content = await response.text();
-      if (!content) throw new Error("No content received from the URL");
       const parsedChannels = parseM3U(content);
       const uniqueChannels = parsedChannels.filter(
         (channel, index, self) =>
@@ -251,11 +239,7 @@ export default function Page() {
       setChannels(uniqueChannels);
       setFileName("playlist_from_url.m3u");
     } catch (err) {
-      if (err instanceof Error) {
-        setError(`Failed to fetch M3U file from URL: ${err.message}`);
-      } else {
-        setError("Failed to fetch M3U file from URL: An unknown error occurred.");
-      }
+      setError(err instanceof Error ? `Failed to fetch M3U from URL: ${err.message}` : "An unknown error occurred.");
     } finally {
       setLoading(false);
       setParsing(false);
@@ -263,17 +247,10 @@ export default function Page() {
   }, [urlInput]);
 
   useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Enter") {
-        handleUrlSubmit();
-      }
-    };
-  
+    const handleKeyDown = (event: KeyboardEvent) => event.key === "Enter" && handleUrlSubmit();
+
     window.addEventListener("keydown", handleKeyDown);
-  
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [handleUrlSubmit]);
 
   const handleEditClick = useCallback((channel: Channel) => {
@@ -287,7 +264,7 @@ export default function Page() {
   }, []);
 
   const handleChangeChannelDetail = useCallback((key: keyof Channel, value: string) => {
-    setCurrentChannel((prev) => prev ? { ...prev, [key]: value } : null);
+    setCurrentChannel((prev) => (prev ? { ...prev, [key]: value } : null));
   }, []);
 
   const handleSaveChanges = useCallback(() => {
@@ -302,8 +279,9 @@ export default function Page() {
   }, [currentChannel, handleModalClose]);
 
   const handleDownload = useCallback(() => {
-    if (typeof window === 'undefined') return; 
-  
+    // Ensure this is only running on the client side
+    if (typeof window === 'undefined') return;
+
     try {
       const m3uContent = generateM3U(channels);
       const blob = new Blob([m3uContent], { type: "text/plain" });
@@ -312,7 +290,7 @@ export default function Page() {
       link.download = fileName || "playlist.m3u";
       document.body.appendChild(link);
       link.click();
-      document.body.removeChild(link); 
+      document.body.removeChild(link); // Clean up the DOM element
     } catch (error) {
       setError("Failed to generate M3U file");
     }
@@ -321,9 +299,7 @@ export default function Page() {
   const groupedChannels = useMemo(() => {
     return channels.reduce((acc, channel) => {
       const group = channel.group || "Ungrouped";
-      if (!acc[group]) {
-        acc[group] = [];
-      }
+      acc[group] = acc[group] || [];
       acc[group].push(channel);
       return acc;
     }, {} as Record<string, Channel[]>);
@@ -340,10 +316,7 @@ export default function Page() {
           {error && <div className="mb-4 text-red-500 text-center">{error}</div>}
 
           <div className="flex flex-col md:flex-row gap-4 mb-6">
-            <div
-              {...getRootProps()}
-              className="cursor-pointer inline-flex items-center justify-center bg-blue-600 text-white px-4 py-2 rounded-md  shadow hover:bg-blue-700 transition"
-            >
+            <div {...getRootProps()} className="cursor-pointer inline-flex items-center justify-center bg-blue-600 text-white px-4 py-2 rounded-md shadow hover:bg-blue-700 transition">
               <input {...getInputProps()} aria-label="Upload M3U file" />
               <FontAwesomeIcon icon={faUpload} className="mr-2" />
               Choose M3U File
@@ -362,8 +335,7 @@ export default function Page() {
 
             <button
               onClick={handleUrlSubmit}
-              className={`bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition ${loading ? "cursor-not-allowed opacity-75" : ""
-                }`}
+              className={`bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition ${loading ? "cursor-not-allowed opacity-75" : ""}`}
               aria-label="Load M3U from URL"
               disabled={loading}
             >
@@ -384,11 +356,7 @@ export default function Page() {
             </button>
           </div>
 
-          {parsing && (
-            <div className="mb-4 text-blue-500 text-center">
-              <p>Loading and parsing channels, please wait...</p>
-            </div>
-          )}
+          {parsing && <div className="mb-4 text-blue-500 text-center"><p>Loading and parsing channels, please wait...</p></div>}
         </div>
 
         {loading || parsing ? (
@@ -401,10 +369,7 @@ export default function Page() {
                 {groupNames.map((group) => (
                   <li
                     key={group}
-                    className={`p-2 cursor-pointer ${selectedGroup === group
-                      ? "bg-blue-600"
-                      : "hover:bg-blue-800"
-                      } rounded-md transition-colors`}
+                    className={`p-2 cursor-pointer ${selectedGroup === group ? "bg-blue-600" : "hover:bg-blue-800"} rounded-md transition-colors`}
                     onClick={() => setSelectedGroup(group)}
                   >
                     {group}
@@ -443,6 +408,5 @@ export default function Page() {
         </Modal>
       </div>
     </>
-
   );
 }
