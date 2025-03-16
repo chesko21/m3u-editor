@@ -268,8 +268,12 @@ export default function Page() {
         handleUrlSubmit();
       }
     };
+  
     window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+  
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
   }, [handleUrlSubmit]);
 
   const handleEditClick = useCallback((channel: Channel) => {
@@ -298,14 +302,17 @@ export default function Page() {
   }, [currentChannel, handleModalClose]);
 
   const handleDownload = useCallback(() => {
-    if (typeof document === 'undefined') return; 
+    if (typeof window === 'undefined') return; 
+  
     try {
       const m3uContent = generateM3U(channels);
       const blob = new Blob([m3uContent], { type: "text/plain" });
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
       link.download = fileName || "playlist.m3u";
+      document.body.appendChild(link);
       link.click();
+      document.body.removeChild(link); 
     } catch (error) {
       setError("Failed to generate M3U file");
     }
