@@ -108,18 +108,18 @@ button {
 /* Responsive Styles */
 @media (max-width: 640px) {
   body {
-    font-size: 14px;
+    font-size: 12px;
   }
 
   input[type="text"],
   input[type="file"],
   textarea,
   select {
-    font-size: 14px;
+    font-size: 12px;
   }
 
   table {
-    font-size: 14px;
+    font-size: 12px;
   }
 
   th,
@@ -130,18 +130,18 @@ button {
 
 @media (min-width: 641px) and (max-width: 1024px) {
   body {
-    font-size: 16px;
+    font-size: 12px;
   }
 
   input[type="text"],
   input[type="file"],
   textarea,
   select {
-    font-size: 16px;
+    font-size: 12px;
   }
 
   table {
-    font-size: 16px;
+    font-size: 12px;
   }
 
   th,
@@ -152,22 +152,35 @@ button {
 
 @media (min-width: 1025px) {
   body {
-    font-size: 18px;
+    font-size: 12px;
   }
 
   input[type="text"],
   input[type="file"],
   textarea,
   select {
-    font-size: 18px;
+    font-size: 12px;
   }
 
   table {
-    font-size: 18px;
+    font-size: 12px;
   }
 
   th,
   td {
-    padding: 16px;
+    padding: 12px;
   }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.animate-fade-out {
+  animation: fadeOut 1s ease-out forwards;
 }

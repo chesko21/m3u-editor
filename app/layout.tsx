@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Menu from "./Menu";
 import { getInitialTheme } from "../lib/theme";
+import SplashScreen from "../components/SplashScreen";
+
 
 export const metadata: Metadata = {
   title: "M3U Editor - Edit and Manage M3U Playlists Easily",
@@ -61,6 +63,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={getInitialTheme()}>
       <body className="bg-gray-50 dark:bg-gray-900 min-h-screen flex flex-col antialiased">
+      <SplashScreen /> 
         <header className="bg-white dark:bg-gray-800 shadow-md">
           <div className="container mx-auto p-4 flex items-center justify-between">
             <h1 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white">M3U Editor</h1>

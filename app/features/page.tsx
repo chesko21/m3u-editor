@@ -12,9 +12,8 @@ export default function Features() {
           </p>
         </div>
 
-        {/* Daftar Fitur */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {/* Fitur 1: Upload M3U File */}
+      
           <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
             <div className="flex items-center justify-center w-12 h-12 bg-blue-100 dark:bg-blue-800 rounded-full mb-4">
               <svg
@@ -35,7 +34,7 @@ export default function Features() {
             <h3 className="text-xl text-gray-900 dark:text-white font-bold mb-2">
               Upload M3U File
             </h3>
-            <p className="">
+            <p className="text-gray-900 dark:text-white">
               Easily upload your M3U files to manage and edit your IPTV playlists.
             </p>
           </div>
@@ -61,7 +60,7 @@ export default function Features() {
             <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
               Edit Channel Details
             </h3>
-            <p className="">
+            <p className="text-gray-900 dark:text-white">
               Modify channel names, logos, URLs, and other details with ease.
             </p>
           </div>
@@ -87,12 +86,11 @@ export default function Features() {
             <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
               Fetch from URL
             </h3>
-            <p className="">
+            <p className="text-gray-900 dark:text-white">
               Load M3U playlists directly from a URL for quick access and editing.
             </p>
           </div>
 
-          {/* Fitur 4: Download M3U File */}
           <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
             <div className="flex items-center justify-center w-12 h-12 bg-yellow-100 dark:bg-yellow-800 rounded-full mb-4">
               <svg
@@ -113,7 +111,7 @@ export default function Features() {
             <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
               Download M3U File
             </h3>
-            <p className="">
+            <p className="text-gray-900 dark:text-white">
               Save your edited playlists as M3U files for offline use.
             </p>
           </div>
@@ -139,12 +137,11 @@ export default function Features() {
             <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
               Light & Dark Mode
             </h3>
-            <p className="">
+            <p className="text-gray-900 dark:text-white">
               Switch between light and dark themes for a comfortable viewing experience.
             </p>
           </div>
 
-          {/* Fitur 6: Responsive Design */}
           <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
             <div className="flex items-center justify-center w-12 h-12 bg-indigo-100 dark:bg-indigo-800 rounded-full mb-4">
               <svg
@@ -165,7 +162,7 @@ export default function Features() {
             <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
               Responsive Design
             </h3>
-            <p className="">
+            <p className="text-gray-900 dark:text-white">
               Access and manage your playlists on any device with a fully responsive design.
             </p>
           </div>

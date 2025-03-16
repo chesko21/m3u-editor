@@ -13,11 +13,13 @@
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "lodash": "^4.17.21",
+    "lottie-react": "^2.4.1",
     "lucide-react": "^0.479.0",
     "next": "15.2.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-dropzone": "^14.3.8",
+    "react-player": "^2.16.0",
     "react-router-dom": "^7.3.0",
     "react-tooltip": "^5.28.0"
   },

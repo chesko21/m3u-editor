@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { Menu as MenuIcon, X as CloseIcon, Sun, Moon } from "lucide-react";
 import { setTheme, getInitialTheme } from "../lib/theme";
-import { useRouter } from "next/navigation"; 
+import { useRouter } from "next/navigation";
 
 const Menu = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -23,8 +23,8 @@ const Menu = () => {
   };
 
   const handleNavigation = (path: string) => {
-    router.push(path); 
-    setIsMenuOpen(false); 
+    router.push(path);
+    setIsMenuOpen(false);
   };
 
   return (
@@ -35,11 +35,15 @@ const Menu = () => {
           onClick={() => setIsMenuOpen((prev) => !prev)}
           aria-label="Toggle Menu"
         >
-          {isMenuOpen ? <CloseIcon className="h-8 w-8" /> : <MenuIcon className="h-8 w-8" />}
+          {isMenuOpen ? (
+            <CloseIcon className="h-8 w-8" />
+          ) : (
+            <MenuIcon className="h-8 w-8" />
+          )}
         </button>
 
         <nav
-          className={`fixed bg-white dark:bg-gray-900 md:bg-transparent w-full md:w-auto md:relative md:flex md:space-x-6 shadow-lg md:shadow-none transition-all duration-300 ease-in-out z-10 ${
+          className={`fixed bg-gray-800  md:bg-transparent w-full md:w-auto md:relative md:flex md:space-x-6 shadow-lg md:shadow-none transition-all duration-300 ease-in-out z-10 ${
             isMenuOpen ? "top-16" : "-top-64 md:top-0"
           }`}
         >
@@ -47,8 +51,8 @@ const Menu = () => {
             {["Home", "Features", "About", "Contact"].map((item) => (
               <li key={item}>
                 <button
-                  onClick={() => handleNavigation(item === "Home" ? "/" : `/${item.toLowerCase()}`)} // Navigasi ke halaman
-                  className="block py-2 px-4 hover:text-yellow-400 transition"
+                  onClick={() => handleNavigation(item === "Home" ? "/" : `/${item.toLowerCase()}`)}
+                  className="block py-2 px-4 rounded-lg hover:bg-yellow-200 dark:hover:bg-yellow-700 transition duration-200 ease-in-out"
                 >
                   {item}
                 </button>

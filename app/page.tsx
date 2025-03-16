@@ -1,12 +1,12 @@
 "use client";
 
 import { useState, useEffect, useCallback, useMemo, memo } from "react";
-import { useDropzone } from 'react-dropzone'; 
+import { useDropzone } from 'react-dropzone';
 import { parseM3U, generateM3U, Channel } from "../lib/m3uParser";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload, faDownload, faLink } from "@fortawesome/free-solid-svg-icons";
-import SkeletonLoader from "../components/SkeletonLoader"; 
-import Modal from "../components/Modal"; 
+import SkeletonLoader from "../components/SkeletonLoader";
+import Modal from "../components/Modal";
 
 // Define interfaces
 interface ChannelItemProps {
@@ -22,6 +22,9 @@ interface ModalContentProps {
 
 // ChannelItem component
 const ChannelItem = memo(({ channel, onEditClick }: ChannelItemProps) => {
+
+  const displayName = channel.name.length > 8 ? `${channel.name.slice(0, 10)}...` : channel.name;
+
   return (
     <div className="flex flex-col items-center p-2 border border-gray-300 rounded shadow">
       {channel.logo ? (
@@ -36,7 +39,7 @@ const ChannelItem = memo(({ channel, onEditClick }: ChannelItemProps) => {
           <span className="text-gray-500">No Image</span>
         </div>
       )}
-      <span className="text-center font-bold">{channel.name}</span>
+      <span className="text-center font-bold">{displayName}</span>
       <button onClick={() => onEditClick(channel)} className="mt-2 bg-blue-500 text-white px-2 py-1 rounded-md">
         Edit
       </button>
@@ -54,7 +57,7 @@ const ModalContent = memo(({ currentChannel, handleChangeChannelDetail, handleSa
         <label className="block text-sm font-medium text-gray-700">Duration</label>
         <input
           type="text"
-          value={currentChannel.duration ?? "-1"} 
+          value={currentChannel.duration ?? "-1"}
           onChange={(e) => handleChangeChannelDetail("duration", e.target.value)}
           className="border p-1 w-full rounded-md"
         />
@@ -154,15 +157,17 @@ const ModalContent = memo(({ currentChannel, handleChangeChannelDetail, handleSa
 
 // Main Page component
 export default function Page() {
-  const [channels, setChannels] = useState<Channel[]>([]);
-  const [fileName, setFileName] = useState<string>("");
-  const [urlInput, setUrlInput] = useState<string>("");
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [parsing, setParsing] = useState<boolean>(false);
+  const [channels, setChannels] = useState < Channel[] > ([]);
+  const [fileName, setFileName] = useState < string > ("");
+  const [urlInput, setUrlInput] = useState < string > ("");
+  const [error, setError] = useState < string | null > (null);
+  const [loading, setLoading] = useState < boolean > (false);
+  const [parsing, setParsing] = useState < boolean > (false);
 
-  const [isModalOpen, setModalOpen] = useState<boolean>(false);
-  const [currentChannel, setCurrentChannel] = useState<Channel | null>(null);
+  const [isModalOpen, setModalOpen] = useState < boolean > (false);
+  const [currentChannel, setCurrentChannel] = useState < Channel | null > (null);
+
+  const [selectedGroup, setSelectedGroup] = useState < string | null > (null);
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     const uploadedFile = acceptedFiles[0];
@@ -212,11 +217,11 @@ export default function Page() {
       setError("Please enter a valid URL.");
       return;
     }
-  
+
     setLoading(true);
     setError(null);
     setParsing(true);
-  
+
     try {
       const response = await fetch(urlInput);
       if (!response.ok) throw new Error(`Network response was not ok: ${response.statusText}`);
@@ -289,16 +294,29 @@ export default function Page() {
     }
   }, [channels, fileName]);
 
+  const groupedChannels = useMemo(() => {
+    return channels.reduce((acc, channel) => {
+      const group = channel.group || "Ungrouped";
+      if (!acc[group]) {
+        acc[group] = [];
+      }
+      acc[group].push(channel);
+      return acc;
+    }, {} as Record<string, Channel[]>);
+  }, [channels]);
+
+  const groupNames = useMemo(() => Object.keys(groupedChannels), [groupedChannels]);
+
   return (
     <div className="flex flex-col h-screen">
       <div className="p-4 bg-white shadow-md">
-        <h1 className="text-2xl md:text-3xl font-bold text-center">M3U Playlist Manager</h1>
+        <h1 className="text-2xl md:text-3xl font-bold text-center mb-6">M3U Playlist Manager</h1>
         {error && <div className="mb-4 text-red-500 text-center">{error}</div>}
 
         <div className="flex flex-col md:flex-row gap-4 mb-6">
           <div
             {...getRootProps()}
-            className="cursor-pointer inline-flex items-center justify-center bg-blue-600 text-white px-4 py-2 rounded-md shadow hover:bg-blue-700 transition"
+            className="cursor-pointer inline-flex items-center justify-center bg-blue-600 text-white px-4 py-2 rounded-md  shadow hover:bg-blue-700 transition"
           >
             <input {...getInputProps()} aria-label="Upload M3U file" />
             <FontAwesomeIcon icon={faUpload} className="mr-2" />
@@ -350,14 +368,39 @@ export default function Page() {
       {loading || parsing ? (
         <SkeletonLoader />
       ) : channels.length > 0 ? (
-        <div className="flex-1 p-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 bg-white">
-          {channels.map((channel, index) => (
-            <ChannelItem
-              key={`${channel.tvgId || 'no-tvgId'}-${channel.url || 'no-url'}-${index}`} // Gabungkan tvgId, url, dan index
-              channel={channel}
-              onEditClick={handleEditClick}
-            />
-          ))}
+        <div className="flex-1 flex">
+          <div className="w-1/4 p-4 overflow-y-auto">
+            <h2 className="text-lg font-bold mb-4">Groups</h2>
+            <ul>
+              {groupNames.map((group) => (
+                <li
+                  key={group}
+                  className={`p-2 cursor-pointer ${selectedGroup === group
+                      ? "bg-blue-600 text-black"
+                      : "hover:bg-blue-800"
+                    } rounded-md transition-colors`}
+                  onClick={() => setSelectedGroup(group)}
+                >
+                  {group}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="border-r border-gray-300"></div>
+
+          <div className="w-3/4 p-4 overflow-y-auto">
+            <h2 className="text-lg font-bold mb-4">Channels</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+              {selectedGroup && groupedChannels[selectedGroup]?.map((channel, index) => (
+                <ChannelItem
+                  key={`${channel.tvgId || 'no-tvgId'}-${channel.url || 'no-url'}-${index}`}
+                  channel={channel}
+                  onEditClick={handleEditClick}
+                />
+              ))}
+            </div>
+          </div>
         </div>
       ) : (
         <div className="flex-1 flex items-center justify-center">
