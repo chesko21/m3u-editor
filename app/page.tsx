@@ -7,6 +7,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload, faDownload, faLink } from "@fortawesome/free-solid-svg-icons";
 import SkeletonLoader from "../components/SkeletonLoader";
 import Modal from "../components/Modal";
+import SplashScreen from "../components/SplashScreen";
+
 
 // Define interfaces
 interface ChannelItemProps {
@@ -169,6 +171,19 @@ export default function Page() {
 
   const [selectedGroup, setSelectedGroup] = useState < string | null > (null);
 
+  // Load channels from localStorage on component mount
+  useEffect(() => {
+    const savedChannels = localStorage.getItem("channels");
+    if (savedChannels) {
+      setChannels(JSON.parse(savedChannels));
+    }
+  }, []);
+
+  // Save channels to localStorage whenever channels change
+  useEffect(() => {
+    localStorage.setItem("channels", JSON.stringify(channels));
+  }, [channels]);
+
   const onDrop = useCallback((acceptedFiles: File[]) => {
     const uploadedFile = acceptedFiles[0];
     if (!uploadedFile) return;
@@ -308,113 +323,118 @@ export default function Page() {
   const groupNames = useMemo(() => Object.keys(groupedChannels), [groupedChannels]);
 
   return (
-    <div className="flex flex-col h-screen">
-      <div className="p-4 bg-white shadow-md">
-        <h1 className="text-2xl md:text-3xl font-bold text-center mb-6">M3U Playlist Manager</h1>
-        {error && <div className="mb-4 text-red-500 text-center">{error}</div>}
+    <>
+      <SplashScreen />
+      <div className="flex flex-col h-screen">
 
-        <div className="flex flex-col md:flex-row gap-4 mb-6">
-          <div
-            {...getRootProps()}
-            className="cursor-pointer inline-flex items-center justify-center bg-blue-600 text-white px-4 py-2 rounded-md  shadow hover:bg-blue-700 transition"
-          >
-            <input {...getInputProps()} aria-label="Upload M3U file" />
-            <FontAwesomeIcon icon={faUpload} className="mr-2" />
-            Choose M3U File
+        <div className="p-4 bg-white shadow-md">
+          <h1 className="text-2xl md:text-3xl font-bold text-center mb-6">M3U Playlist Manager</h1>
+          {error && <div className="mb-4 text-red-500 text-center">{error}</div>}
+
+          <div className="flex flex-col md:flex-row gap-4 mb-6">
+            <div
+              {...getRootProps()}
+              className="cursor-pointer inline-flex items-center justify-center bg-blue-600 text-white px-4 py-2 rounded-md  shadow hover:bg-blue-700 transition"
+            >
+              <input {...getInputProps()} aria-label="Upload M3U file" />
+              <FontAwesomeIcon icon={faUpload} className="mr-2" />
+              Choose M3U File
+            </div>
+
+            <div className="flex-grow">
+              <input
+                type="text"
+                placeholder="Enter M3U URL"
+                value={urlInput}
+                onChange={(e) => setUrlInput(e.target.value)}
+                className="border border-gray-300 px-3 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                aria-label="M3U URL input"
+              />
+            </div>
+
+            <button
+              onClick={handleUrlSubmit}
+              className={`bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition ${loading ? "cursor-not-allowed opacity-75" : ""
+                }`}
+              aria-label="Load M3U from URL"
+              disabled={loading}
+            >
+              <FontAwesomeIcon icon={faLink} className="mr-2" />
+              {loading ? "Loading..." : "Load"}
+            </button>
           </div>
 
-          <div className="flex-grow">
-            <input
-              type="text"
-              placeholder="Enter M3U URL"
-              value={urlInput}
-              onChange={(e) => setUrlInput(e.target.value)}
-              className="border border-gray-300 px-3 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-              aria-label="M3U URL input"
-            />
+          <div className="mb-4">
+            <button
+              onClick={handleDownload}
+              className="bg-blue-600 text-white w-full md:w-auto px-4 py-2 rounded-md hover:bg-blue-700 transition disabled:bg-gray-400"
+              disabled={channels.length === 0}
+              aria-label="Download M3U file"
+            >
+              <FontAwesomeIcon icon={faDownload} className="mr-2" />
+              Download M3U
+            </button>
           </div>
 
-          <button
-            onClick={handleUrlSubmit}
-            className={`bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition ${loading ? "cursor-not-allowed opacity-75" : ""
-              }`}
-            aria-label="Load M3U from URL"
-            disabled={loading}
-          >
-            <FontAwesomeIcon icon={faLink} className="mr-2" />
-            {loading ? "Loading..." : "Load"}
-          </button>
+          {parsing && (
+            <div className="mb-4 text-blue-500 text-center">
+              <p>Loading and parsing channels, please wait...</p>
+            </div>
+          )}
         </div>
 
-        <div className="mb-4">
-          <button
-            onClick={handleDownload}
-            className="bg-blue-600 text-white w-full md:w-auto px-4 py-2 rounded-md hover:bg-blue-700 transition disabled:bg-gray-400"
-            disabled={channels.length === 0}
-            aria-label="Download M3U file"
-          >
-            <FontAwesomeIcon icon={faDownload} className="mr-2" />
-            Download M3U
-          </button>
-        </div>
-
-        {parsing && (
-          <div className="mb-4 text-blue-500 text-center">
-            <p>Loading and parsing channels, please wait...</p>
-          </div>
-        )}
-      </div>
-
-      {loading || parsing ? (
-        <SkeletonLoader />
-      ) : channels.length > 0 ? (
-        <div className="flex-1 flex">
-          <div className="w-1/4 p-4 overflow-y-auto">
-            <h2 className="text-lg font-bold mb-4">Groups</h2>
-            <ul>
-              {groupNames.map((group) => (
-                <li
-                  key={group}
-                  className={`p-2 cursor-pointer ${selectedGroup === group
-                      ? "bg-blue-600 text-black"
+        {loading || parsing ? (
+          <SkeletonLoader />
+        ) : channels.length > 0 ? (
+          <div className="flex-1 flex">
+            <div className="w-1/4 p-4 overflow-y-auto">
+              <h2 className="text-lg font-bold mb-4">Groups</h2>
+              <ul>
+                {groupNames.map((group) => (
+                  <li
+                    key={group}
+                    className={`p-2 cursor-pointer ${selectedGroup === group
+                      ? "bg-blue-600"
                       : "hover:bg-blue-800"
-                    } rounded-md transition-colors`}
-                  onClick={() => setSelectedGroup(group)}
-                >
-                  {group}
-                </li>
-              ))}
-            </ul>
-          </div>
+                      } rounded-md transition-colors`}
+                    onClick={() => setSelectedGroup(group)}
+                  >
+                    {group}
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-          <div className="border-r border-gray-300"></div>
+            <div className="border-r border-gray-300"></div>
 
-          <div className="w-3/4 p-4 overflow-y-auto">
-            <h2 className="text-lg font-bold mb-4">Channels</h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-              {selectedGroup && groupedChannels[selectedGroup]?.map((channel, index) => (
-                <ChannelItem
-                  key={`${channel.tvgId || 'no-tvgId'}-${channel.url || 'no-url'}-${index}`}
-                  channel={channel}
-                  onEditClick={handleEditClick}
-                />
-              ))}
+            <div className="w-3/4 p-4 overflow-y-auto">
+              <h2 className="text-lg font-bold mb-4">Channels</h2>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                {selectedGroup && groupedChannels[selectedGroup]?.map((channel, index) => (
+                  <ChannelItem
+                    key={`${channel.tvgId || 'no-tvgId'}-${channel.url || 'no-url'}-${index}`}
+                    channel={channel}
+                    onEditClick={handleEditClick}
+                  />
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      ) : (
-        <div className="flex-1 flex items-center justify-center">
-          <span className="text-gray-500">No channels available.</span>
-        </div>
-      )}
+        ) : (
+          <div className="flex-1 flex items-center justify-center">
+            <span className="text-gray-500">No channels available.</span>
+          </div>
+        )}
 
-      <Modal isOpen={isModalOpen} onClose={handleModalClose} title="Edit Channel Details">
-        <ModalContent
-          currentChannel={currentChannel}
-          handleChangeChannelDetail={handleChangeChannelDetail}
-          handleSaveChanges={handleSaveChanges}
-        />
-      </Modal>
-    </div>
+        <Modal isOpen={isModalOpen} onClose={handleModalClose} title="Edit Channel Details">
+          <ModalContent
+            currentChannel={currentChannel}
+            handleChangeChannelDetail={handleChangeChannelDetail}
+            handleSaveChanges={handleSaveChanges}
+          />
+        </Modal>
+      </div>
+    </>
+
   );
 }

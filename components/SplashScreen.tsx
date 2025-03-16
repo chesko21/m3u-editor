@@ -6,8 +6,10 @@ import loadingAnimation from "../assets/loading.json";
 
 export default function SplashScreen() {
   const [isVisible, setIsVisible] = useState(true);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
+    setIsClient(true); // Set bahwa ini berjalan di client
     const timer = setTimeout(() => {
       setIsVisible(false);
     }, 3000);
@@ -15,7 +17,7 @@ export default function SplashScreen() {
     return () => clearTimeout(timer);
   }, []);
 
-  if (!isVisible) return null;
+  if (!isVisible || !isClient) return null; // Hanya render jika di client
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-900 z-50">
