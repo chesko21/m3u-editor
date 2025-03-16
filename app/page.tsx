@@ -8,6 +8,7 @@ import { faUpload, faDownload, faLink } from "@fortawesome/free-solid-svg-icons"
 import SkeletonLoader from "../components/SkeletonLoader";
 import Modal from "../components/Modal";
 import SplashScreen from "../components/SplashScreen";
+import dynamic from 'next/dynamic';
 
 
 // Define interfaces
@@ -297,6 +298,7 @@ export default function Page() {
   }, [currentChannel, handleModalClose]);
 
   const handleDownload = useCallback(() => {
+    if (typeof document === 'undefined') return; 
     try {
       const m3uContent = generateM3U(channels);
       const blob = new Blob([m3uContent], { type: "text/plain" });
@@ -326,7 +328,6 @@ export default function Page() {
     <>
       <SplashScreen />
       <div className="flex flex-col h-screen">
-
         <div className="p-4 bg-white shadow-md">
           <h1 className="text-2xl md:text-3xl font-bold text-center mb-6">M3U Playlist Manager</h1>
           {error && <div className="mb-4 text-red-500 text-center">{error}</div>}

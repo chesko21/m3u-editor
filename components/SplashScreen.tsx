@@ -9,7 +9,7 @@ export default function SplashScreen() {
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    setIsClient(true); // Set bahwa ini berjalan di client
+    setIsClient(true); 
     const timer = setTimeout(() => {
       setIsVisible(false);
     }, 3000);
@@ -17,7 +17,7 @@ export default function SplashScreen() {
     return () => clearTimeout(timer);
   }, []);
 
-  if (!isVisible || !isClient) return null; // Hanya render jika di client
+  if (!isVisible || !isClient) return null; 
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-900 z-50">
