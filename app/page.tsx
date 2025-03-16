@@ -48,7 +48,6 @@ const ChannelItem = memo(({ channel, onEditClick }: ChannelItemProps) => {
 });
 
 // ModalContent component
-// ModalContent component
 const ModalContent = memo(({ currentChannel, handleChangeChannelDetail, handleSaveChanges }: ModalContentProps) => {
   if (!currentChannel) return null;
 
