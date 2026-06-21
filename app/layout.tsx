@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import Menu from "./Menu";
 import SplashScreenWrapper from "../components/SplashScreenWrapper";
+import InstallPrompt from "../components/InstallPrompt";
 
 // 1. Perbaikan URL GitHub Blob ke Raw CDN agar gambar SEO/Favicon terbaca sempurna
 const LOGO_RAW_URL = "https://raw.githubusercontent.com/chesko21/smart_tv/master/assets/images/maskable.png";
@@ -118,6 +119,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main className="w-full flex-grow flex flex-col h-[calc(100vh-4rem)] overflow-hidden">
           {children}
         </main>
+
+        {/* Custom PWA Install Popup */}
+        <InstallPrompt />
       </body>
     </html>
   );
