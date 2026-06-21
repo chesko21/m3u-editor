@@ -1,17 +1,15 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import Lottie from "lottie-react";
-import loadingAnimation from "../assets/loading.json";
 
-export default function SplashScreen() {
+export default function SplashScreenWrapper() {
   const [isVisible, setIsVisible] = useState(true);
   const [isClient, setIsClient] = useState(false);
   const [isFadingOut, setIsFadingOut] = useState(false);
   const [progress, setProgress] = useState(0);
   const [loadingText, setLoadingText] = useState("Initializing");
 
-  // Gunakan useRef untuk mengamankan referensi interval dari memory leak
+  // Amankan siklus interval rekursif dari memory leak menggunakan useRef
   const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
@@ -42,7 +40,6 @@ export default function SplashScreen() {
 
         let currentProgress = startProgress;
 
-        // Bersihkan interval aktif sebelumnya sebelum membuka interval baru
         if (progressIntervalRef.current) {
           clearInterval(progressIntervalRef.current);
         }
@@ -64,7 +61,6 @@ export default function SplashScreen() {
 
     processStep();
 
-    // Waktu tunggu total disesuaikan dengan durasi pemuatan progres (total ~2500ms)
     const fadeOutTimer = setTimeout(() => {
       setIsFadingOut(true);
     }, 2600);
@@ -92,27 +88,49 @@ export default function SplashScreen() {
     >
       <div className="relative flex flex-col items-center p-4">
         
-        {/* Lottie Animation Wrapper */}
+        {/* Animated Custom SVG CSS Spinner (Alternatif Lottie Ringan) */}
         <div
           className={`relative ${
             isFadingOut ? "scale-95 opacity-0" : "scale-100 opacity-100"
           } transition-all duration-500`}
         >
-          {/* Efek Ambience Glow Biru di Belakang Animasi */}
           <div className="absolute inset-0 bg-blue-500/10 rounded-full blur-3xl animate-pulse" />
-          <div className="w-40 h-40 md:w-52 md:h-52 relative">
-            <Lottie
-              animationData={loadingAnimation}
-              loop={true}
-              className="w-full h-full"
-            />
+          
+          <div className="w-40 h-40 md:w-52 md:h-52 relative flex items-center justify-center">
+            <div className="relative">
+              {/* Outer Spin Ring */}
+              <div className="w-20 h-20 md:w-24 md:h-24 border-4 border-blue-500 border-t-transparent rounded-full animate-spin transition-all" />
+              
+              {/* Center Play Icon Indicator */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <svg
+                  className="w-8 h-8 md:w-10 md:h-10 text-blue-400 drop-shadow-[0_0_8px_rgba(96,165,250,0.4)]"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.8}
+                    d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
+                  />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.8}
+                    d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Progress Tracker Info */}
+        {/* Progress Text & Tracker Info */}
         <div className="mt-6 w-48 md:w-56">
           <div className="flex justify-between items-center mb-2 px-0.5">
-            <span className="text-blue-400 text-xs font-semibold tracking-wider transition-all duration-200">
+            <span className="text-blue-400 text-xs font-semibold tracking-wider">
               {loadingText}
             </span>
             <span className="text-slate-400 text-xs font-mono font-bold">
@@ -131,7 +149,7 @@ export default function SplashScreen() {
           </div>
         </div>
 
-        {/* Bouncing Dots Indicator */}
+        {/* Bouncing Dots Loading */}
         <div className="mt-5 flex space-x-1.5">
           {[0, 1, 2].map((dot) => (
             <div
@@ -145,15 +163,15 @@ export default function SplashScreen() {
           ))}
         </div>
 
-        {/* Footer App Brand Titles */}
+        {/* Brand Meta Title */}
         <p className="mt-8 text-slate-500 text-[10px] md:text-xs font-bold tracking-[0.25em] uppercase text-center">
           StreamEdit Pro
         </p>
-        
+
         <div className="mt-8 w-24 md:w-32 h-px bg-gradient-to-r from-transparent via-slate-800 to-transparent" />
       </div>
 
-      {/* App Version Info Sign */}
+      {/* Footer System Version Sign */}
       <div className="absolute bottom-6 left-0 right-0 flex justify-center">
         <div className="flex items-center space-x-1.5 text-slate-700 text-[11px] font-medium tracking-wide">
           <span className="w-1 h-1 bg-slate-800 rounded-full" />

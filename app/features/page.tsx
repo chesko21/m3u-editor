@@ -1,172 +1,110 @@
+"use client";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { 
+  faUpload, 
+  faEdit, 
+  faCloudDownloadAlt, 
+  faDownload, 
+  faBoxes, 
+  faBolt 
+} from "@fortawesome/free-solid-svg-icons";
+
 export default function Features() {
+  const featureList = [
+    {
+      title: "Upload M3U File",
+      description: "Unggah berkas M3U/M3U8 lokal Anda secara instan untuk dianalisis dan dikelola langsung di dalam browser.",
+      icon: faUpload,
+      iconColor: "text-blue-600 dark:text-blue-400",
+      bgColor: "bg-blue-50 dark:bg-blue-950/40 border-blue-100/50 dark:border-blue-900/30",
+      glowClass: "hover:shadow-blue-500/10 hover:border-blue-500/30 dark:hover:border-blue-500/20"
+    },
+    {
+      title: "Fetch from Remote URL",
+      description: "Muat daftar putar IPTV langsung menggunakan tautan URL jaringan web eksternal melalui sistem proxy yang aman.",
+      icon: faCloudDownloadAlt,
+      iconColor: "text-purple-600 dark:text-purple-400",
+      bgColor: "bg-purple-50 dark:bg-purple-950/40 border-purple-100/50 dark:border-purple-900/30",
+      glowClass: "hover:shadow-purple-500/10 hover:border-purple-500/30 dark:hover:border-purple-500/20"
+    },
+    {
+      title: "Edit Channel Details",
+      description: "Ubah metadata saluran mulai dari durasi, ID TVG, nama, logo ikon, hingga konfigurasi header HTTP Referer khusus.",
+      icon: faEdit,
+      iconColor: "text-amber-600 dark:text-amber-400",
+      bgColor: "bg-amber-50 dark:bg-amber-950/40 border-amber-100/50 dark:border-amber-900/30",
+      glowClass: "hover:shadow-amber-500/10 hover:border-amber-500/30 dark:hover:border-amber-500/20"
+    },
+    {
+      title: "Smart Grouping",
+      description: "Saluran otomatis dikelompokkan ke dalam kategori berdasarkan tag grup bawaan berkas untuk navigasi yang lebih efisien.",
+      icon: faBoxes,
+      iconColor: "text-indigo-600 dark:text-indigo-400",
+      bgColor: "bg-indigo-50 dark:bg-indigo-950/40 border-indigo-100/50 dark:border-indigo-900/30",
+      glowClass: "hover:shadow-indigo-500/10 hover:border-indigo-500/30 dark:hover:border-indigo-500/20"
+    },
+    {
+      title: "Debounced Search",
+      description: "Sistem pencarian super cepat teroptimasi yang mampu memfilter ribuan saluran IPTV tanpa menyebabkan lag pada perangkat.",
+      icon: faBolt,
+      iconColor: "text-rose-600 dark:text-rose-400",
+      bgColor: "bg-rose-50 dark:bg-rose-950/40 border-rose-100/50 dark:border-rose-900/30",
+      glowClass: "hover:shadow-rose-500/10 hover:border-rose-500/30 dark:hover:border-rose-500/20"
+    },
+    {
+      title: "Export & Save Playlist",
+      description: "Unduh kembali hasil suntingan Anda menjadi berkas M3U standar industri yang siap digunakan pada aplikasi pemutar IPTV favorit.",
+      icon: faDownload,
+      iconColor: "text-emerald-600 dark:text-emerald-400",
+      bgColor: "bg-emerald-50 dark:bg-emerald-950/40 border-emerald-100/50 dark:border-emerald-900/30",
+      glowClass: "hover:shadow-emerald-500/10 hover:border-emerald-500/30 dark:hover:border-emerald-500/20"
+    }
+  ];
+
   return (
-    <div className="py-20 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Judul dan Deskripsi */}
-        <div className="text-center mb-16">
-          <h2 className="text-3xl font-bold sm:text-4xl">
-            Features
+    <div className="flex-1 overflow-y-auto bg-[#f8fafc] dark:bg-[#0b0f19] py-16 px-4 sm:px-6 lg:px-8 transition-colors duration-200">
+      <div className="max-w-5xl mx-auto flex flex-col gap-12">
+        
+        {/* Header Section */}
+        <div className="text-center animate-fade-in max-w-2xl mx-auto flex flex-col gap-3">
+          <span className="text-[10px] font-extrabold tracking-widest text-blue-600 dark:text-blue-500 uppercase">
+            Fitur Utama Aplikasi
+          </span>
+          <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white">
+            Segudang Fitur Andalan
           </h2>
-          <p className="mt-4 text-lg ">
-            Discover the powerful features of our M3U Playlist Manager designed to make your IPTV experience seamless and efficient.
+          <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 font-medium leading-relaxed">
+            Temukan berbagai kapabilitas utama M3U StreamEditor Pro yang dirancang khusus untuk memberikan efisiensi penuh dalam manajemen playlist IPTV Anda.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
-            <div className="flex items-center justify-center w-12 h-12 bg-blue-100 dark:bg-blue-800 rounded-full mb-4">
-              <svg
-                className="w-6 h-6 text-blue-600 dark:text-blue-300"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
-                />
-              </svg>
+        {/* Features Dynamic Grid Layout */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {featureList.map((feature, idx) => (
+            <div 
+              key={idx} 
+              style={{ animationDelay: `${idx * 100}ms` }}
+              className={`group p-6 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800/80 rounded-3xl shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col gap-4 animate-scale-in opacity-0 ${feature.glowClass}`}
+            >
+              {/* Icon Container */}
+              <div className={`w-11 h-11 rounded-2xl flex items-center justify-center border ${feature.bgColor} group-hover:scale-110 transition-transform duration-300`}>
+                <FontAwesomeIcon icon={feature.icon} className={`text-base ${feature.iconColor}`} />
+              </div>
+              
+              {/* Text Meta Content */}
+              <div className="flex flex-col gap-1.5">
+                <h3 className="text-sm sm:text-base font-extrabold text-gray-900 dark:text-white tracking-tight">
+                  {feature.title}
+                </h3>
+                <p className="text-xs sm:text-sm text-gray-400 dark:text-gray-400 font-medium leading-relaxed">
+                  {feature.description}
+                </p>
+              </div>
             </div>
-            <h3 className="text-xl text-gray-900 dark:text-white font-bold mb-2">
-              Upload M3U File
-            </h3>
-            <p className="text-gray-900 dark:text-white">
-              Easily upload your M3U files to manage and edit your IPTV playlists.
-            </p>
-          </div>
-
-          {/* Fitur 2: Edit Channel Details */}
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
-            <div className="flex items-center justify-center w-12 h-12 bg-green-100 dark:bg-green-800 rounded-full mb-4">
-              <svg
-                className="w-6 h-6 text-green-600 dark:text-green-300"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-                />
-              </svg>
-            </div>
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
-              Edit Channel Details
-            </h3>
-            <p className="text-gray-900 dark:text-white">
-              Modify channel names, logos, URLs, and other details with ease.
-            </p>
-          </div>
-
-          {/* Fitur 3: Fetch from URL */}
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
-            <div className="flex items-center justify-center w-12 h-12 bg-purple-100 dark:bg-purple-800 rounded-full mb-4">
-              <svg
-                className="w-6 h-6 text-purple-600 dark:text-purple-300"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
-                />
-              </svg>
-            </div>
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
-              Fetch from URL
-            </h3>
-            <p className="text-gray-900 dark:text-white">
-              Load M3U playlists directly from a URL for quick access and editing.
-            </p>
-          </div>
-
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
-            <div className="flex items-center justify-center w-12 h-12 bg-yellow-100 dark:bg-yellow-800 rounded-full mb-4">
-              <svg
-                className="w-6 h-6 text-yellow-600 dark:text-yellow-300"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-                />
-              </svg>
-            </div>
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
-              Download M3U File
-            </h3>
-            <p className="text-gray-900 dark:text-white">
-              Save your edited playlists as M3U files for offline use.
-            </p>
-          </div>
-
-          {/* Fitur 5: Light & Dark Mode */}
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
-            <div className="flex items-center justify-center w-12 h-12 bg-pink-100 dark:bg-pink-800 rounded-full mb-4">
-              <svg
-                className="w-6 h-6 text-pink-600 dark:text-pink-300"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
-                />
-              </svg>
-            </div>
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
-              Light & Dark Mode
-            </h3>
-            <p className="text-gray-900 dark:text-white">
-              Switch between light and dark themes for a comfortable viewing experience.
-            </p>
-          </div>
-
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
-            <div className="flex items-center justify-center w-12 h-12 bg-indigo-100 dark:bg-indigo-800 rounded-full mb-4">
-              <svg
-                className="w-6 h-6 text-indigo-600 dark:text-indigo-300"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"
-                />
-              </svg>
-            </div>
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
-              Responsive Design
-            </h3>
-            <p className="text-gray-900 dark:text-white">
-              Access and manage your playlists on any device with a fully responsive design.
-            </p>
-          </div>
+          ))}
         </div>
+
       </div>
     </div>
   );

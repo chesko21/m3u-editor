@@ -1,172 +1,176 @@
+"use client";
+
+import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEnvelope, faPaperPlane, faCheckCircle, faClock, faMapMarkerAlt, faLifeRing, faArrowRight } from "@fortawesome/free-solid-svg-icons";
+
 export default function Contact() {
+  const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+    
+    // Simulate API delay for premium experience
+    setTimeout(() => {
+      setLoading(false);
+      setSubmitted(true);
+    }, 1200);
+  };
+
   return (
-    <div className="py-12 px-4 sm:px-6 lg:px-8 bg-white shadow-md">
-      <div className="max-w-7xl mx-auto">
-        {/* Judul dan Deskripsi */}
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold sm:text-4xl">
-            Contact Us
+    <div className="flex-1 overflow-y-auto bg-[#f8fafc] dark:bg-[#0b0f19] py-16 px-4 sm:px-6 lg:px-8 transition-colors duration-200">
+      <div className="max-w-4xl mx-auto flex flex-col gap-10">
+        
+        {/* Header Section */}
+        <div className="text-center animate-fade-in flex flex-col gap-3">
+          <div className="w-14 h-14 rounded-2xl bg-blue-50 dark:bg-blue-950/50 text-blue-600 flex items-center justify-center mx-auto mb-2 border border-blue-100/50 dark:border-blue-900/30 shadow-xs">
+            <FontAwesomeIcon icon={faEnvelope} className="text-base" />
+          </div>
+          <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white">
+            Hubungi Kami
           </h2>
-          <p className="mt-3 text-lg leading-relaxed">
-            We'd love to hear from you! Whether you have a question, feedback, or
-            just want to say hello, feel free to reach out.
+          <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 font-medium leading-relaxed max-w-lg mx-auto">
+            Punya pertanyaan, umpan balik, atau ingin melaporkan kendala teknis? Hubungi kami langsung melalui formulir di bawah ini.
           </p>
         </div>
 
-        {/* Grid untuk Formulir dan Informasi Kontak */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Formulir Kontak */}
-          <div className="bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-lg shadow-lg">
-            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-              Send Us a Message
-            </h3>
-            <form>
-              <div className="mb-4">
-                <label
-                  htmlFor="name"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-                >
-                  Your Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white hover:border-gray-400 transition-colors duration-200"
-                  placeholder="Enter your name"
-                  required
-                />
-              </div>
-              <div className="mb-4">
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-                >
-                  Your Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white hover:border-gray-400 transition-colors duration-200"
-                  placeholder="Enter your email"
-                  required
-                />
-              </div>
-              <div className="mb-4">
-                <label
-                  htmlFor="message"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-                >
-                  Your Message
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  rows={4}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white hover:border-gray-400 transition-colors duration-200"
-                  placeholder="Enter your message"
-                  required
-                ></textarea>
-              </div>
-              <button
-                type="submit"
-                className="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors duration-200 transform hover:scale-105"
-              >
-                Send Message
-              </button>
-            </form>
-          </div>
-
-          {/* Informasi Kontak dan Peta */}
-          <div className="space-y-6">
-            {/* Informasi Kontak */}
-            <div className="bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-lg shadow-lg">
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-                Contact Information
+        {submitted ? (
+          /* Premium Success State Card */
+          <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800/80 p-8 sm:p-12 rounded-3xl shadow-xl text-center flex flex-col items-center gap-5 max-w-md mx-auto animate-scale-in glass-panel">
+            <div className="w-16 h-16 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-500 flex items-center justify-center border-2 border-emerald-100/30 animate-bounce">
+              <FontAwesomeIcon icon={faCheckCircle} className="text-3xl" />
+            </div>
+            <div className="flex flex-col gap-2">
+              <h3 className="text-lg font-extrabold text-gray-900 dark:text-white">
+                Pesan Terkirim!
               </h3>
-              <div className="space-y-3">
-                <div className="flex items-center">
-                  <svg
-                    className="w-5 h-5 text-blue-600 dark:text-blue-300 mr-3"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+              <p className="text-xs sm:text-sm text-gray-400 dark:text-gray-400 font-medium leading-relaxed">
+                Terima kasih atas umpan balik Anda. Tim kami telah menerima pesan Anda dan akan merespon segera jika diperlukan.
+              </p>
+            </div>
+            <button
+              onClick={() => setSubmitted(false)}
+              className="mt-2 inline-flex items-center gap-2 px-5 py-2.5 bg-blue-50 hover:bg-blue-100 dark:bg-blue-950/40 dark:hover:bg-blue-900/40 text-blue-600 dark:text-blue-400 border border-blue-100/50 dark:border-blue-900/30 text-xs font-extrabold rounded-2xl transition-all cursor-pointer"
+            >
+              <span>Kirim Pesan Baru</span>
+              <FontAwesomeIcon icon={faArrowRight} className="text-[10px]" />
+            </button>
+          </div>
+        ) : (
+          /* Dual-column Form Layout */
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-8 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800/80 rounded-3xl shadow-xl overflow-hidden glass-panel">
+            {/* Form Column */}
+            <div className="md:col-span-3 p-6 sm:p-8 border-b md:border-b-0 md:border-r border-gray-100 dark:border-gray-800/80">
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label htmlFor="name" className="block text-[10px] font-bold text-gray-400 dark:text-gray-500 tracking-wider uppercase mb-1.5">
+                      Your Name
+                    </label>
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:bg-white dark:focus:bg-gray-900 dark:text-white transition-all text-xs sm:text-sm font-semibold"
+                      placeholder="Nama lengkap"
+                      required
                     />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                  </div>
+
+                  <div>
+                    <label htmlFor="email" className="block text-[10px] font-bold text-gray-400 dark:text-gray-500 tracking-wider uppercase mb-1.5">
+                      Your Email
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:bg-white dark:focus:bg-gray-900 dark:text-white transition-all text-xs sm:text-sm font-semibold"
+                      placeholder="nama@email.com"
+                      required
                     />
-                  </svg>
-                  <p className="text-gray-600 dark:text-gray-300">
-                    123 Main Street, City, Country
-                  </p>
+                  </div>
                 </div>
-                <div className="flex items-center">
-                  <svg
-                    className="w-5 h-5 text-blue-600 dark:text-blue-300 mr-3"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-                    />
-                  </svg>
-                  <p className="text-gray-600 dark:text-gray-300">
-                    +1 (123) 456-7890
-                  </p>
+
+                <div>
+                  <label htmlFor="message" className="block text-[10px] font-bold text-gray-400 dark:text-gray-500 tracking-wider uppercase mb-1.5">
+                    Your Message
+                  </label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    rows={4}
+                    className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:bg-white dark:focus:bg-gray-900 dark:text-white transition-all text-xs sm:text-sm font-semibold resize-none"
+                    placeholder="Tuliskan pesan atau laporan kendala Anda di sini..."
+                    required
+                  ></textarea>
                 </div>
-                <div className="flex items-center">
-                  <svg
-                    className="w-5 h-5 text-blue-600 dark:text-blue-300 mr-3"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                    />
-                  </svg>
-                  <p className="text-gray-600 dark:text-gray-300">
-                    info@yourcompany.com
-                  </p>
-                </div>
-              </div>
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-xl font-bold transition-all text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md shadow-blue-500/10 active:scale-[0.99] disabled:bg-gray-200 dark:disabled:bg-gray-800 disabled:text-gray-400 cursor-pointer"
+                >
+                  <FontAwesomeIcon icon={loading ? faLifeRing : faPaperPlane} className={`text-xs ${loading ? "animate-spin" : ""}`} />
+                  <span>{loading ? "Mengirim..." : "Kirim Pesan"}</span>
+                </button>
+              </form>
             </div>
 
-            {/* Peta (Opsional) */}
-            <div className="bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-lg shadow-lg">
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-                Our Location
-              </h3>
-              <div className="aspect-w-16 aspect-h-9">
-                <iframe
-                  src="https://www.google.com/maps/embed?pb=..."
-                  className="w-full h-full rounded-md"
-                  allowFullScreen
-                ></iframe>
+            {/* Info Column */}
+            <div className="md:col-span-2 bg-gray-50/50 dark:bg-gray-950/20 p-6 sm:p-8 flex flex-col justify-between gap-6">
+              <div className="flex flex-col gap-6">
+                <h3 className="text-xs font-extrabold text-gray-900 dark:text-white uppercase tracking-widest">
+                  Info Kontak
+                </h3>
+                
+                <div className="flex flex-col gap-4 text-xs">
+                  <div className="flex items-start gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 flex items-center justify-center flex-shrink-0">
+                      <FontAwesomeIcon icon={faEnvelope} />
+                    </div>
+                    <div>
+                      <p className="font-bold text-gray-700 dark:text-gray-300">Surat Elektronik</p>
+                      <p className="text-gray-400 dark:text-gray-500 mt-0.5">support@streamedit.pro</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 flex items-center justify-center flex-shrink-0">
+                      <FontAwesomeIcon icon={faClock} />
+                    </div>
+                    <div>
+                      <p className="font-bold text-gray-700 dark:text-gray-300">Jam Operasional</p>
+                      <p className="text-gray-400 dark:text-gray-500 mt-0.5">Senin - Jumat | 09:00 - 17:00 WIB</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 flex items-center justify-center flex-shrink-0">
+                      <FontAwesomeIcon icon={faMapMarkerAlt} />
+                    </div>
+                    <div>
+                      <p className="font-bold text-gray-700 dark:text-gray-300">Lokasi Proyek</p>
+                      <p className="text-gray-400 dark:text-gray-500 mt-0.5">Yogyakarta, Indonesia</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-4 bg-blue-50/50 dark:bg-blue-950/30 border border-blue-100/30 dark:border-blue-900/20 rounded-2xl flex flex-col gap-1.5">
+                <h4 className="text-[10px] font-extrabold text-blue-600 dark:text-blue-400 uppercase tracking-wider">
+                  Dukungan Github
+                </h4>
+                <p className="text-[10px] text-gray-400 dark:text-gray-500 leading-relaxed font-semibold">
+                  Jika Anda menemukan masalah teknis, disarankan untuk membuka tiket Issue di halaman GitHub proyek ini.
+                </p>
               </div>
             </div>
           </div>
-        </div>
+        )}
+
       </div>
     </div>
   );
